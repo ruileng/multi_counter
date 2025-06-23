@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Multi Counter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .section h2 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .generation-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background: #f8f9fa;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-right: 5px;
+            font-weight: 600;
+        }
+        
+        .tab-button.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        input[type="text"], select {
+            width: 300px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+        }
+        
+        .btn-human {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+        
+        .btn-animal {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .btn-object {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .category-section {
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .category-header {
+            padding: 15px 20px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-header.human {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+        
+        .category-header.animal {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .category-header.object {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .category-content {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .counter-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .counter-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .counter-card h3 {
+            margin-top: 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .counter-type-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-mediapipe {
+            background: #e7f5f0;
+            color: #2d8653;
+        }
+        
+        .badge-yolo {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .counter-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Multi Counter Admin Panel</h1>
+            <p>Developer interface for managing exercise counters</p>
+        </div>
+        
+        <div class="content">
+            <div id="statusMessage" class="status-message hidden"></div>
+            
+            <!-- Statistics Overview -->
+            <div class="section">
+                <h2>📊 System Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ categorized_counters.Human|length }}</div>
+                        <div class="stat-label">🏃‍♀️ Human Action Counters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ categorized_counters.Animal|length }}</div>
+                        <div class="stat-label">🐾 Animal Counters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ categorized_counters.Object|length }}</div>
+                        <div class="stat-label">🏀 Object Counters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">{{ total_counters }}</div>
+                        <div class="stat-label">Total Counters</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Counter Generation Section -->
+            <div class="section">
+                <h2>➕ Generate New Counters</h2>
+                
+                <div class="generation-tabs">
+                    <button class="tab-button active" onclick="showTab('human')">🏃‍♀️ Human Actions</button>
+                    <button class="tab-button" onclick="showTab('animal')">🐾 Animals</button>
+                    <button class="tab-button" onclick="showTab('object')">🏀 Objects</button>
+                </div>
+                
+                <!-- Human Counter Generation -->
+                <div id="human-tab" class="tab-content active">
+                    <h3>Generate Human Action Counter (MediaPipe)</h3>
+                    <div class="form-group">
+                        <label for="humanExerciseName">Exercise Name:</label>
+                        <input type="text" id="humanExerciseName" placeholder="e.g., 'lunges', 'shoulder press', 'deadlifts'">
+                        <button class="btn-human" onclick="generateHumanCounter()">Generate Human Counter</button>
+                    </div>
+                    <p style="color: #666; font-size: 14px;">
+                        Creates a MediaPipe-based counter for human exercise movements using pose detection.
+                    </p>
+                </div>
+                
+                <!-- Animal Counter Generation -->
+                <div id="animal-tab" class="tab-content">
+                    <h3>Generate Animal Counter (YOLO)</h3>
+                    <div class="form-group">
+                        <label for="animalType">Animal Type:</label>
+                        <select id="animalType">
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="bird">Bird</option>
+                            <option value="horse">Horse</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="cow">Cow</option>
+                            <option value="elephant">Elephant</option>
+                            <option value="bear">Bear</option>
+                            <option value="zebra">Zebra</option>
+                            <option value="giraffe">Giraffe</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="animalLogic">Detection Logic:</label>
+                        <select id="animalLogic">
+                            <option value="movement_detection">Movement Detection</option>
+                            <option value="jump_detection">Jump Detection</option>
+                            <option value="bounce_detection">Bounce Detection</option>
+                        </select>
+                    </div>
+                    <button class="btn-animal" onclick="generateAnimalCounter()">Generate Animal Counter</button>
+                    <p style="color: #666; font-size: 14px;">
+                        Creates a YOLO-based counter for animal movement detection and counting.
+                    </p>
+                </div>
+                
+                <!-- Object Counter Generation -->
+                <div id="object-tab" class="tab-content">
+                    <h3>Generate Object Counter (YOLO)</h3>
+                    <div class="form-group">
+                        <label for="objectType">Object Type:</label>
+                        <input type="text" id="objectType" placeholder="e.g., 'sports ball', 'frisbee', 'bottle'">
+                    </div>
+                    <div class="form-group">
+                        <label for="objectLogic">Detection Logic:</label>
+                        <select id="objectLogic">
+                            <option value="bounce_detection">Bounce Detection</option>
+                            <option value="movement_detection">Movement Detection</option>
+                            <option value="jump_detection">Jump Detection</option>
+                        </select>
+                    </div>
+                    <button class="btn-object" onclick="generateObjectCounter()">Generate Object Counter</button>
+                    <p style="color: #666; font-size: 14px;">
+                        Creates a YOLO-based counter for object movement, bouncing, or other patterns.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Categorized Counter Display -->
+            <div class="section">
+                <h2>📋 Current Counters by Category</h2>
+                
+                <!-- Human Action Counters -->
+                <div class="category-section">
+                    <div class="category-header human">
+                        <span>🏃‍♀️ Human Action Counters (MediaPipe)</span>
+                        <span>{{ categorized_counters.Human|length }} counters</span>
+                    </div>
+                    <div class="category-content">
+                        {% if categorized_counters.Human %}
+                        <div class="counter-list">
+                            {% for counter in categorized_counters.Human %}
+                            <div class="counter-card">
+                                <h3>
+                                    {{ counter.name }}
+                                    <span class="counter-type-badge badge-mediapipe">MediaPipe</span>
+                                </h3>
+                                <div class="counter-info">
+                                    <strong>Type:</strong> {{ counter.logic_type }}<br>
+                                    <strong>Threshold:</strong> {{ counter.threshold }}<br>
+                                    <strong>Stable Frames:</strong> {{ counter.stable_frames }}<br>
+                                    <strong>Description:</strong> {{ counter.description or 'Human exercise detection' }}
+                                </div>
+                                <button class="btn-danger" onclick="deleteCounter('{{ counter.name }}')">
+                                    🗑️ Delete
+                                </button>
+                                <button class="btn-danger" onclick="forceDeleteCounter('{{ counter.name }}')" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                    ⚡ Force Delete
+                                </button>
+                                <button onclick="showCounterDetails('{{ counter.name }}')">
+                                    📄 Details
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p style="color: #666; font-style: italic;">No human action counters found. Generate one using the form above.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Animal Counters -->
+                <div class="category-section">
+                    <div class="category-header animal">
+                        <span>🐾 Animal Counters (YOLO)</span>
+                        <span>{{ categorized_counters.Animal|length }} counters</span>
+                    </div>
+                    <div class="category-content">
+                        {% if categorized_counters.Animal %}
+                        <div class="counter-list">
+                            {% for counter in categorized_counters.Animal %}
+                            <div class="counter-card">
+                                <h3>
+                                    {{ counter.name }}
+                                    <span class="counter-type-badge badge-yolo">YOLO</span>
+                                </h3>
+                                <div class="counter-info">
+                                    <strong>Animal:</strong> {{ counter.object_class }}<br>
+                                    <strong>Logic:</strong> {{ counter.logic_type }}<br>
+                                    <strong>Confidence:</strong> {{ counter.confidence_threshold }}<br>
+                                    <strong>Threshold:</strong> {{ counter.threshold }}<br>
+                                    <strong>Center Line:</strong> {{ '✅' if counter.has_center_line else '❌' }}
+                                </div>
+                                <button class="btn-danger" onclick="deleteCounter('{{ counter.name }}')">
+                                    🗑️ Delete
+                                </button>
+                                <button class="btn-danger" onclick="forceDeleteCounter('{{ counter.name }}')" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                    ⚡ Force Delete
+                                </button>
+                                <button onclick="showCounterDetails('{{ counter.name }}')">
+                                    📄 Details
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p style="color: #666; font-style: italic;">No animal counters found. Generate one using the form above.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Object Counters -->
+                <div class="category-section">
+                    <div class="category-header object">
+                        <span>🏀 Object Counters (YOLO)</span>
+                        <span>{{ categorized_counters.Object|length }} counters</span>
+                    </div>
+                    <div class="category-content">
+                        {% if categorized_counters.Object %}
+                        <div class="counter-list">
+                            {% for counter in categorized_counters.Object %}
+                            <div class="counter-card">
+                                <h3>
+                                    {{ counter.name }}
+                                    <span class="counter-type-badge badge-yolo">YOLO</span>
+                                </h3>
+                                <div class="counter-info">
+                                    <strong>Object:</strong> {{ counter.object_class }}<br>
+                                    <strong>Logic:</strong> {{ counter.logic_type }}<br>
+                                    <strong>Confidence:</strong> {{ counter.confidence_threshold }}<br>
+                                    <strong>Threshold:</strong> {{ counter.threshold }}<br>
+                                    <strong>Center Line:</strong> {{ '✅' if counter.has_center_line else '❌' }}
+                                </div>
+                                <button class="btn-danger" onclick="deleteCounter('{{ counter.name }}')">
+                                    🗑️ Delete
+                                </button>
+                                <button class="btn-danger" onclick="forceDeleteCounter('{{ counter.name }}')" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                                    ⚡ Force Delete
+                                </button>
+                                <button onclick="showCounterDetails('{{ counter.name }}')">
+                                    📄 Details
+                                </button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p style="color: #666; font-style: italic;">No object counters found. Generate one using the form above.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🔄 System Actions</h2>
+                <button class="btn-success" onclick="regenerateAll()">
+                    🔄 Regenerate All Counter Code
+                </button>
+                <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                    Use this if you manually edited the config file and need to regenerate the Python code.
+                </p>
+            </div>
+            
+            <div class="section">
+                <h2>🔗 Quick Links</h2>
+                <a href="http://localhost:5000" target="_blank" style="text-decoration: none;">
+                    <button>🌐 Open User Interface</button>
+                </a>
+                <p style="color: #666; font-size: 14px; margin-top: 10px;">
+                    Open the main user interface in a new tab.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        async function generateHumanCounter() {
+            const exerciseName = document.getElementById('humanExerciseName').value.trim();
+            if (!exerciseName) {
+                showMessage('Please enter an exercise name', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/generate_human_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        exercise_name: exerciseName
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    document.getElementById('humanExerciseName').value = '';
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error generating human counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function generateAnimalCounter() {
+            const animalType = document.getElementById('animalType').value;
+            const logicType = document.getElementById('animalLogic').value;
+            
+            try {
+                const response = await fetch('/generate_animal_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        animal_type: animalType,
+                        logic_type: logicType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error generating animal counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function generateObjectCounter() {
+            const objectType = document.getElementById('objectType').value.trim();
+            const logicType = document.getElementById('objectLogic').value;
+            
+            if (!objectType) {
+                showMessage('Please enter an object type', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/generate_object_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        object_type: objectType,
+                        logic_type: logicType
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    document.getElementById('objectType').value = '';
+                    setTimeout(() => location.reload(), 2000);
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error generating object counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function deleteCounter(counterName) {
+            if (!confirm(`Are you sure you want to delete ${counterName}?`)) {
+                return;
+            }
+            
+            showMessage(`Deleting ${counterName}...`, 'info');
+            
+            try {
+                const response = await fetch('/delete_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        counter_name: counterName
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error deleting counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function forceDeleteCounter(counterName) {
+            if (!confirm(`FORCE DELETE ${counterName}? This skips code regeneration and is faster but may leave inconsistencies.`)) {
+                return;
+            }
+            
+            showMessage(`Force deleting ${counterName}...`, 'info');
+            
+            try {
+                const response = await fetch('/force_delete_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        counter_name: counterName
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error force deleting counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function regenerateAll() {
+            if (!confirm('Regenerate all counter code? This will overwrite existing counter files.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/regenerate_all', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error regenerating counters: ' + error.message, 'error');
+            }
+        }
+        
+        function showCounterDetails(counterName) {
+            // Find counter details and show in a modal or alert
+            const counterData = JSON.parse(document.getElementById('counterData').textContent);
+            const allCounters = counterData.Human.concat(counterData.Animal).concat(counterData.Object);
+            const counter = allCounters.find(c => c.name === counterName);
+            if (counter) {
+                alert(JSON.stringify(counter, null, 2));
+            }
+        }
+        
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('statusMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `status-message status-${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+    
+    <!-- Counter data for JavaScript -->
+    <script type="application/json" id="counterData">{{ categorized_counters|tojson|safe }}</script>
+</body>
+</html> 

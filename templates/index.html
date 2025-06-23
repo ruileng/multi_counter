@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Action Counter - Web Interface</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 700px;
+            max-height: 100vh;
+        }
+        
+        .video-section {
+            flex: 3;
+            padding: 20px;
+            border-right: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            max-height: 100vh;
+        }
+        
+        .video-area {
+            flex-shrink: 0;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .video-controls-area {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .video-controls-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .video-controls-area::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .video-controls-area::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        .video-controls-area::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .controls-section {
+            flex: 2;
+            padding: 20px;
+            background-color: #fafafa;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 100%;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #videoFeed {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .count-display {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        .count-display h2 {
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            scroll-margin-top: 20px;
+        }
+        
+        .control-group h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 3px;
+            font-size: 1em;
+        }
+        
+        .form-group {
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9em;
+        }
+        
+        select, input, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-stop {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #51cf66, #40c057);
+        }
+        
+        .btn-refresh {
+            background: linear-gradient(135deg, #74c0fc, #339af0);
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+        
+        .parameter-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .parameter-input input[type="range"] {
+            flex: 1;
+            height: 6px;
+        }
+        
+        .parameter-input .range-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.85em;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .session-info {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        
+        .session-info h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #1976d2;
+            font-size: 0.95em;
+        }
+        
+        .session-info p {
+            margin: 4px 0;
+            font-size: 0.8em;
+        }
+        
+        .count-history {
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        
+        .count-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85em;
+            transition: background-color 0.2s;
+        }
+        
+        .count-entry:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .count-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .count-number {
+            font-weight: bold;
+            color: #2e7d32;
+            min-width: 30px;
+        }
+        
+        .count-time {
+            color: #666;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .count-confidence {
+            color: #1976d2;
+            font-size: 0.8em;
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .no-counts {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .video-hidden {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+        
+        .video-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9ff;
+        }
+        
+        .upload-area:hover {
+            border-color: #5a67d8;
+            background: #f0f4ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #4c51bf;
+            background: #e6fffa;
+            transform: scale(1.02);
+        }
+        
+        .upload-content p {
+            margin: 5px 0;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .upload-info {
+            font-size: 0.85em !important;
+            color: #888 !important;
+            font-weight: normal !important;
+        }
+        
+        .upload-progress {
+            margin-top: 15px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .help-text {
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 3px;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+        
+        .counter-info {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .counter-type {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .counter-description {
+            font-size: 0.85em;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .detection-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .badge-mediapipe {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .badge-yolo {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .counter-category {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .counter-category h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .counter-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .center-line-controls {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin: 8px 0;
+        }
+        
+        .btn-adjust, .btn-reset {
+            flex: 1;
+            min-width: 70px;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-adjust {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+        
+        .btn-adjust:hover {
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-1px);
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background: linear-gradient(135deg, #F57C00, #E65100);
+            transform: translateY(-1px);
+        }
+        
+        .btn-fine {
+            flex: 0.5 !important;
+            font-size: 11px !important;
+            padding: 6px 8px !important;
+            opacity: 0.8;
+        }
+        
+        .btn-fine:hover {
+            opacity: 1;
+        }
+        
+        .center-line-display {
+            background: #f0f8ff !important;
+            border: 2px solid #4CAF50 !important;
+            font-weight: bold;
+            text-align: center;
+            color: #2e7d32;
+        }
+        
+        .counter-type-info {
+            background: #e8f5e8;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .counter-type-info p {
+            margin: 3px 0;
+            font-size: 0.8em;
+        }
+        
+        .parameter-section {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .parameter-section h5 {
+            margin: 0 0 10px 0;
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .keyboard-controls-info {
+            background: #fff9c4;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 4px solid #FFC107;
+            font-family: monospace;
+        }
+        
+        .keyboard-controls-info p {
+            margin: 5px 0;
+            font-size: 0.85em;
+        }
+        
+        kbd {
+            background: #333;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        /* Improved responsive design */
+        @media (max-width: 1200px) {
+            .main-content {
+                max-height: none;
+            }
+            
+            .controls-section {
+                max-height: none;
+            }
+            
+            .video-container {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .video-container {
+                height: 250px;
+            }
+            
+            .center-line-controls {
+                flex-direction: column;
+            }
+            
+            .btn-adjust, .btn-reset {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .video-section {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .controls-section {
+                padding: 15px;
+            }
+            
+            .counter-category {
+                padding: 10px;
+            }
+            
+            .parameter-input {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .parameter-input .range-value {
+                min-width: auto;
+                text-align: left;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            .video-container {
+                height: 200px;
+            }
+            
+            .control-group {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+            
+            .control-group h3 {
+                font-size: 1.1em;
+            }
+            
+            button {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+        
+        /* Remove sticky positioning from center line controls */
+        #centerLineGroup {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .slider-status {
+            font-size: 0.7em;
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-top: 3px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .slider-status.ready {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4CAF50;
+        }
+        
+        .slider-status.active {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        
+        .slider-status.working {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #17a2b8;
+        }
+        
+        /* Enhanced slider styling */
+        #centerLineSlider, #sensitivitySlider {
+            height: 8px;
+            background: linear-gradient(to right, #ddd, #4CAF50, #ddd);
+            outline: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        #centerLineSlider:hover, #sensitivitySlider:hover {
+            opacity: 1;
+        }
+        
+        #centerLineSlider::-webkit-slider-thumb, #sensitivitySlider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4CAF50;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* Make video area clearly fixed */
+        .video-area {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        #centerLineGroup h3 {
+            color: #2e7d32;
+            margin-top: 0;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+        
+        #centerLineGroup p {
+            margin: 4px 0;
+            font-size: 0.8em;
+        }
+        
+        #centerLineGroup em {
+            font-size: 0.75em;
+            color: #666;
+        }
+        
+        /* Recording controls styles */
+        .recording-status {
+            font-size: 0.85em;
+            padding: 6px 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+            text-align: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .recording-status.ready {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4CAF50;
+        }
+        
+        .recording-status.recording {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .recording-info {
+            font-size: 0.75em;
+            color: #666;
+            text-align: center;
+            margin-top: 5px;
+            font-family: monospace;
+        }
+        
+        #recordingGroup {
+            background: #fff8e1;
+            border-left: 4px solid #FF9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏋️ Multi Action Counter</h1>
+            <p>Real-time exercise counting with AI pose detection</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="video-section">
+                <!-- Fixed Video Area -->
+                <div class="video-area">
+                    <div class="video-container">
+                        <img id="videoFeed" src="" alt="Video feed will appear here" class="video-hidden">
+                        <div id="videoPlaceholder" class="video-placeholder video-visible">
+                            Select a counter and click Start to begin
+                        </div>
+                    </div>
+                    
+                    <div class="count-display">
+                        <h2 id="currentCount">Count: 0</h2>
+                        <p id="counterName">No counter selected</p>
+                    </div>
+                </div>
+                
+                <!-- Scrollable Controls Area -->
+                <div class="video-controls-area">
+                    <!-- Parameters Section -->
+                    <div class="control-group" id="parametersGroup">
+                        <h3>⚙️ Parameters</h3>
+                        <p>Adjust these parameters to fine-tune the counter accuracy:</p>
+                        
+                        <div class="form-group">
+                            <label for="threshold">Movement Threshold:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="threshold" min="0.01" max="0.3" step="0.01" value="0.1">
+                                <span class="range-value" id="thresholdValue">0.1</span>
+                            </div>
+                            <p class="help-text">Sensitivity for detecting movement/pose changes</p>
+                            <div class="slider-status" id="thresholdStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="minVisibility">Min Visibility:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="minVisibility" min="0.1" max="1.0" step="0.1" value="0.7">
+                                <span class="range-value" id="minVisibilityValue">0.7</span>
+                            </div>
+                            <p class="help-text">Minimum pose visibility for MediaPipe counters</p>
+                            <div class="slider-status" id="visibilityStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stableFrames">Stable Frames:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="stableFrames" min="1" max="10" step="1" value="3">
+                                <span class="range-value" id="stableFramesValue">3</span>
+                            </div>
+                            <p class="help-text">Frames needed to confirm detection</p>
+                            <div class="slider-status" id="stableFramesStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group" id="confidenceThresholdGroup">
+                            <label for="confidenceThreshold">Detection Confidence:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="confidenceThreshold" min="0.1" max="0.9" step="0.05" value="0.5">
+                                <span class="range-value" id="confidenceThresholdValue">0.5</span>
+                            </div>
+                            <p class="help-text">YOLO detection confidence threshold</p>
+                            <div class="slider-status" id="confidenceStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group" id="antiCheatGroup">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="enableAntiCheat">
+                                <label for="enableAntiCheat">Enable Anti-Cheat Validation</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="validationThresholdGroup">
+                            <label for="validationThreshold">Validation Threshold:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="validationThreshold" min="0.01" max="0.1" step="0.01" value="0.03">
+                                <span class="range-value" id="validationThresholdValue">0.03</span>
+                            </div>
+                            <p class="help-text">Anti-cheat validation sensitivity</p>
+                            <div class="slider-status" id="validationStatus">Ready to adjust when counter is running</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Center Line Controls -->
+                    <div class="control-group" id="centerLineGroup">
+                        <h3>🎯 Center Line Controls</h3>
+                        <p>Adjust the reference line for YOLO counter detection:</p>
+                        <p><em>Note: These controls work with Animal and Object counters when running</em></p>
+                        
+                        <div class="form-group">
+                            <label for="centerLineSlider">Center Line Position:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="centerLineSlider" min="50" max="1000" step="5" value="500">
+                                <span class="range-value" id="centerLineSliderValue">500</span>
+                            </div>
+                            <p class="help-text">Drag slider to adjust the yellow reference line position (50-1000px)</p>
+                            <div class="slider-status" id="centerLineStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sensitivitySlider">Detection Sensitivity:</label>
+                            <div class="parameter-input">
+                                <input type="range" id="sensitivitySlider" min="0.3" max="3.0" step="0.1" value="1.0">
+                                <span class="range-value" id="sensitivitySliderValue">1.0</span>
+                            </div>
+                            <p class="help-text">Lower = more sensitive, Higher = less sensitive (0.3-3.0)</p>
+                            <div class="slider-status" id="sensitivityStatus">Ready to adjust when counter is running</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Quick Adjustment:</label>
+                            <div class="center-line-controls">
+                                <button type="button" onclick="adjustCenterLineQuick(-20)" class="btn-adjust" title="Move line up 20px">⬆️ Up</button>
+                                <button type="button" onclick="adjustCenterLineQuick(20)" class="btn-adjust" title="Move line down 20px">⬇️ Down</button>
+                                <button type="button" onclick="resetCalibration()" class="btn-reset" title="Reset to automatic calibration">🔄 Reset</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Counter Type Info:</label>
+                            <div id="counterTypeInfo" class="counter-type-info">
+                                <p><strong>Sports Ball:</strong> Yellow line = Ground reference</p>
+                                <p><strong>Animal:</strong> Yellow line = Jump target</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Recording Controls -->
+                    <div class="control-group" id="recordingGroup">
+                        <h3>📹 Video Recording</h3>
+                        <p>Record your counting session with overlays for playback:</p>
+                        
+                        <div class="form-group">
+                            <div class="center-line-controls">
+                                <button type="button" id="startRecordingBtn" onclick="startRecording()" class="btn-adjust" title="Start recording video">🔴 Start Recording</button>
+                                <button type="button" id="stopRecordingBtn" onclick="stopRecording()" class="btn-adjust" disabled title="Stop recording">⏹️ Stop Recording</button>
+                                <button type="button" id="downloadRecordingBtn" onclick="downloadRecording()" class="btn-reset" disabled title="Download recorded video">💾 Download</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="recording-status" id="recordingStatus">Ready to record</div>
+                            <div class="recording-info" id="recordingInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <div id="statusMessage" class="status-message hidden"></div>
+                
+                <div class="control-group">
+                    <h3>🎯 Counter Selection</h3>
+                    
+                    <!-- Human Action Counters -->
+                    <div class="counter-category">
+                        <h4>🏃‍♀️ Human Action Counters (MediaPipe)</h4>
+                        <div class="form-group">
+                            <select id="humanCounterSelect" class="counter-select">
+                                <option value="">Select a human action counter...</option>
+                                {% for counter in counters.Human %}
+                                <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="human">
+                                    {{ counter.name }} - {{ counter.logic_type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Animal Counters -->
+                    <div class="counter-category">
+                        <h4>🐾 Animal Counters (YOLO)</h4>
+                        <div class="form-group">
+                            <select id="animalCounterSelect" class="counter-select">
+                                <option value="">Select an animal counter...</option>
+                                {% for counter in counters.Animal %}
+                                <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="animal">
+                                    {{ counter.name }} - {{ counter.object_class }} {{ counter.logic_type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Object Counters -->
+                    <div class="counter-category">
+                        <h4>🏀 Object Counters (YOLO)</h4>
+                        <div class="form-group">
+                            <select id="objectCounterSelect" class="counter-select">
+                                <option value="">Select an object counter...</option>
+                                {% for counter in counters.Object %}
+                                <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="object" data-has-center-line="{{ counter.has_center_line }}">
+                                    {{ counter.name }} - {{ counter.object_class }} {{ counter.logic_type }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoSource">Video Source:</label>
+                        <select id="videoSource">
+                            <option value="0">Webcam (Camera 0)</option>
+                            <option value="1">Webcam (Camera 1)</option>
+                            <option value="upload">Upload Video File</option>
+                            <option value="uploaded">Use Uploaded Video</option>
+                            <option value="custom">Custom File Path</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group hidden" id="uploadVideoGroup">
+                        <label>Upload Video File:</label>
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <p>📁 Drag & drop video file here or click to browse</p>
+                                <p class="upload-info">Supported: MP4, AVI, MOV, MKV, WMV, FLV, WebM, M4V (Max: 100MB)</p>
+                            </div>
+                            <input type="file" id="videoFileInput" accept=".mp4,.avi,.mov,.mkv,.wmv,.flv,.webm,.m4v" style="display: none;">
+                        </div>
+                        <div id="uploadProgress" class="upload-progress hidden">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <p id="uploadStatus">Uploading...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group hidden" id="uploadedVideoGroup">
+                        <label for="uploadedVideoSelect">Select Uploaded Video:</label>
+                        <select id="uploadedVideoSelect">
+                            <option value="">Loading videos...</option>
+                        </select>
+                        <button type="button" id="refreshVideosBtn" class="btn-refresh">🔄 Refresh List</button>
+                    </div>
+                    
+                    <div class="form-group hidden" id="customVideoGroup">
+                        <label for="customVideoPath">Video File Path (on server):</label>
+                        <input type="text" id="customVideoPath" placeholder="Enter video file path on server">
+                        <p class="help-text">Enter the full path to a video file on the server (e.g., /path/to/video.mp4)</p>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h3>🎮 Controls</h3>
+                    <button id="startBtn" onclick="startCounter()">🚀 Start Counter</button>
+                    <button id="stopBtn" onclick="stopCounter()" class="btn-stop" disabled>⏹️ Stop Counter</button>
+                    <button id="saveBtn" onclick="saveSession()" class="btn-save" disabled>💾 Save Session</button>
+                </div>
+                
+                <div class="session-info" id="sessionInfo">
+                    <h4>📊 Session Info</h4>
+                    <p><strong>Start Time:</strong> <span id="startTime">Not started</span></p>
+                    <p><strong>Total Reps:</strong> <span id="totalReps">0</span></p>
+                    <p><strong>Current Parameters:</strong> <span id="currentParams">None</span></p>
+                    
+                    <h4>📈 Count History</h4>
+                    <div class="count-history" id="countHistory">
+                        <p>No counts recorded yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        let updateInterval;
+        let selectedCounter = '';
+        let selectedCounterType = '';
+        let selectedCounterCategory = '';
+        let sliderUpdateTimeout = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let isRecording = false;
+        let recordingStream = null;
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            updateParameterValues();
+        });
+        
+        function setupEventListeners() {
+            // Counter selection changes
+            document.getElementById('humanCounterSelect').addEventListener('change', handleCounterSelection);
+            document.getElementById('animalCounterSelect').addEventListener('change', handleCounterSelection);
+            document.getElementById('objectCounterSelect').addEventListener('change', handleCounterSelection);
+            
+            // Keyboard controls for center line adjustment
+            document.addEventListener('keydown', handleKeyboardControls);
+            
+            // Video source change
+            document.getElementById('videoSource').addEventListener('change', function() {
+                const uploadGroup = document.getElementById('uploadVideoGroup');
+                const uploadedGroup = document.getElementById('uploadedVideoGroup');
+                const customGroup = document.getElementById('customVideoGroup');
+                
+                // Hide all groups first
+                uploadGroup.classList.add('hidden');
+                uploadedGroup.classList.add('hidden');
+                customGroup.classList.add('hidden');
+                
+                if (this.value === 'upload') {
+                    uploadGroup.classList.remove('hidden');
+                } else if (this.value === 'uploaded') {
+                    uploadedGroup.classList.remove('hidden');
+                    loadUploadedVideos();
+                } else if (this.value === 'custom') {
+                    customGroup.classList.remove('hidden');
+                }
+            });
+            
+            // File upload setup
+            setupFileUpload();
+            
+            // Refresh videos button
+            document.getElementById('refreshVideosBtn').addEventListener('click', loadUploadedVideos);
+            
+            // Parameter range inputs
+            const rangeInputs = ['threshold', 'minVisibility', 'stableFrames', 'confidenceThreshold', 'validationThreshold'];
+            rangeInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    const valueSpan = document.getElementById(id + 'Value');
+                    input.addEventListener('input', function() {
+                        valueSpan.textContent = this.value;
+                    });
+                }
+            });
+            
+            // Add real-time parameter adjustment with debouncing
+            const parameterSliders = [
+                { id: 'threshold', param: 'threshold', statusId: 'thresholdStatus' },
+                { id: 'minVisibility', param: 'min_visibility', statusId: 'visibilityStatus' },
+                { id: 'stableFrames', param: 'stable_frames', statusId: 'stableFramesStatus' },
+                { id: 'confidenceThreshold', param: 'confidence_threshold', statusId: 'confidenceStatus' },
+                { id: 'validationThreshold', param: 'validation_threshold', statusId: 'validationStatus' }
+            ];
+            
+            parameterSliders.forEach(slider => {
+                const element = document.getElementById(slider.id);
+                const valueElement = document.getElementById(slider.id + 'Value');
+                const statusElement = document.getElementById(slider.statusId);
+                
+                if (element && valueElement && statusElement) {
+                    element.addEventListener('input', function() {
+                        valueElement.textContent = this.value;
+                        statusElement.textContent = 'Adjusting...';
+                        statusElement.className = 'slider-status working';
+                        
+                        // Debounce the API call
+                        if (sliderUpdateTimeout) {
+                            clearTimeout(sliderUpdateTimeout);
+                        }
+                        
+                        sliderUpdateTimeout = setTimeout(() => {
+                            if (isRunning) {
+                                adjustParameter(slider.param, this.value, statusElement);
+                            } else {
+                                statusElement.textContent = 'Start counter to activate adjustment';
+                                statusElement.className = 'slider-status ready';
+                            }
+                        }, 300);
+                    });
+                }
+            });
+            
+            // Center line slider with debouncing
+            const centerLineSlider = document.getElementById('centerLineSlider');
+            if (centerLineSlider) {
+                centerLineSlider.addEventListener('input', function() {
+                    document.getElementById('centerLineSliderValue').textContent = this.value;
+                    document.getElementById('centerLineStatus').textContent = 'Adjusting...';
+                    document.getElementById('centerLineStatus').className = 'slider-status working';
+                    
+                    // Debounce the API call
+                    if (sliderUpdateTimeout) {
+                        clearTimeout(sliderUpdateTimeout);
+                    }
+                    
+                    sliderUpdateTimeout = setTimeout(() => {
+                        if (isRunning && selectedCounterType === 'yolo') {
+                            adjustCenterLineFromSlider(this.value);
+                        } else if (selectedCounterType === 'yolo') {
+                            document.getElementById('centerLineStatus').textContent = 'Start counter to activate adjustment';
+                            document.getElementById('centerLineStatus').className = 'slider-status ready';
+                        } else {
+                            document.getElementById('centerLineStatus').textContent = 'Select a YOLO counter to use this control';
+                            document.getElementById('centerLineStatus').className = 'slider-status ready';
+                        }
+                    }, 300);
+                });
+            }
+            
+            // Sensitivity slider with debouncing
+            const sensitivitySlider = document.getElementById('sensitivitySlider');
+            if (sensitivitySlider) {
+                sensitivitySlider.addEventListener('input', function() {
+                    document.getElementById('sensitivitySliderValue').textContent = this.value;
+                    document.getElementById('sensitivityStatus').textContent = 'Adjusting...';
+                    document.getElementById('sensitivityStatus').className = 'slider-status working';
+                    
+                    // Debounce the API call
+                    if (sliderUpdateTimeout) {
+                        clearTimeout(sliderUpdateTimeout);
+                    }
+                    
+                    sliderUpdateTimeout = setTimeout(() => {
+                        if (isRunning && selectedCounterType === 'yolo') {
+                            adjustSensitivityFromSlider(this.value);
+                        } else if (selectedCounterType === 'yolo') {
+                            document.getElementById('sensitivityStatus').textContent = 'Start counter to activate adjustment';
+                            document.getElementById('sensitivityStatus').className = 'slider-status ready';
+                        } else {
+                            document.getElementById('sensitivityStatus').textContent = 'Select a YOLO counter to use this control';
+                            document.getElementById('sensitivityStatus').className = 'slider-status ready';
+                        }
+                    }, 300);
+                });
+            }
+            
+            // Anti-cheat checkbox
+            document.getElementById('enableAntiCheat').addEventListener('change', function() {
+                const validationGroup = document.getElementById('validationThresholdGroup');
+                if (this.checked) {
+                    validationGroup.style.display = 'block';
+                } else {
+                    validationGroup.style.display = 'none';
+                }
+            });
+        }
+        
+        function handleCounterSelection(event) {
+            // Clear other selections
+            const selects = ['humanCounterSelect', 'animalCounterSelect', 'objectCounterSelect'];
+            selects.forEach(selectId => {
+                if (selectId !== event.target.id) {
+                    document.getElementById(selectId).value = '';
+                }
+            });
+            
+            const option = event.target.selectedOptions[0];
+            if (option && option.value) {
+                selectedCounter = option.value;
+                selectedCounterType = option.dataset.type;
+                selectedCounterCategory = option.dataset.category;
+                
+                // Show/hide controls based on counter type
+                updateControlsVisibility();
+                
+                // Load counter parameters
+                loadCounterInfo(selectedCounter);
+                
+                // Scroll to parameters section smoothly
+                setTimeout(() => {
+                    document.getElementById('parametersGroup').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }, 100);
+            } else {
+                selectedCounter = '';
+                selectedCounterType = '';
+                selectedCounterCategory = '';
+                updateControlsVisibility();
+            }
+        }
+        
+        function updateControlsVisibility() {
+            // Center line controls - only for YOLO counters
+            const centerLineGroup = document.getElementById('centerLineGroup');
+            if (selectedCounterType === 'yolo') {
+                centerLineGroup.classList.remove('hidden');
+            } else {
+                centerLineGroup.classList.add('hidden');
+            }
+            
+            // Parameter controls visibility
+            const confidenceGroup = document.getElementById('confidenceThresholdGroup');
+            const antiCheatGroup = document.getElementById('antiCheatGroup');
+            const validationGroup = document.getElementById('validationThresholdGroup');
+            
+            if (selectedCounterType === 'yolo') {
+                // Show YOLO-specific controls
+                confidenceGroup.style.display = 'block';
+                antiCheatGroup.style.display = 'none';
+                validationGroup.style.display = 'none';
+            } else if (selectedCounterType === 'mediapipe') {
+                // Show MediaPipe-specific controls
+                confidenceGroup.style.display = 'none';
+                antiCheatGroup.style.display = 'block';
+                validationGroup.style.display = document.getElementById('enableAntiCheat').checked ? 'block' : 'none';
+            } else {
+                // Hide type-specific controls when no counter selected
+                confidenceGroup.style.display = 'none';
+                antiCheatGroup.style.display = 'none';
+                validationGroup.style.display = 'none';
+            }
+        }
+        
+        async function adjustParameter(paramName, value, statusElement) {
+            try {
+                statusElement.textContent = 'Applying...';
+                statusElement.className = 'slider-status working';
+                
+                const response = await fetch('/adjust_parameter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        parameter: paramName,
+                        value: parseFloat(value)
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    statusElement.textContent = `Set to ${value}`;
+                    statusElement.className = 'slider-status active';
+                    showMessage(result.message, 'success');
+                } else {
+                    statusElement.textContent = 'Failed to adjust';
+                    statusElement.className = 'slider-status ready';
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                statusElement.textContent = 'Error occurred';
+                statusElement.className = 'slider-status ready';
+                showMessage(`Error adjusting ${paramName}: ${error.message}`, 'error');
+            }
+        }
+        
+        function handleKeyboardControls(event) {
+            // Only handle keys when a YOLO counter is running and has center line support
+            if (!isRunning || !selectedCounter || selectedCounterType !== 'yolo') {
+                return;
+            }
+            
+            // Check if center line controls are visible (means counter supports it)
+            const centerLineGroup = document.getElementById('centerLineGroup');
+            if (centerLineGroup.classList.contains('hidden')) {
+                return;
+            }
+            
+            // Prevent default behavior for our handled keys
+            const handledKeys = ['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown', 'Equal', 'Minus', 'Digit0', 'Numpad0'];
+            if (handledKeys.includes(event.code)) {
+                event.preventDefault();
+            }
+            
+            // Handle keyboard inputs
+            switch(event.code) {
+                case 'KeyW':
+                case 'ArrowUp':
+                    adjustCenterLine(-0.05);
+                    showMessage('Center line moved UP (W key)', 'success');
+                    break;
+                    
+                case 'KeyS':
+                case 'ArrowDown':
+                    adjustCenterLine(0.05);
+                    showMessage('Center line moved DOWN (S key)', 'success');
+                    break;
+                    
+                case 'Equal': // + key (without shift)
+                case 'NumpadAdd':
+                    adjustSensitivity('decrease');
+                    showMessage('Sensitivity DECREASED (less sensitive)', 'success');
+                    break;
+                    
+                case 'Minus':
+                case 'NumpadSubtract':
+                    adjustSensitivity('increase');
+                    showMessage('Sensitivity INCREASED (more sensitive)', 'success');
+                    break;
+                    
+                case 'Digit0':
+                case 'Numpad0':
+                    resetCalibration();
+                    showMessage('Calibration RESET to auto (0 key)', 'success');
+                    break;
+            }
+        }
+        
+        function setupFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('videoFileInput');
+            
+            // Click to upload
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            // File selection
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleFileDrop);
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.add('dragover');
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+        }
+        
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('uploadArea').classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                uploadFile(files[0]);
+            }
+        }
+        
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                uploadFile(file);
+            }
+        }
+        
+        async function uploadFile(file) {
+            const progressDiv = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const uploadStatus = document.getElementById('uploadStatus');
+            
+            // Show progress bar
+            progressDiv.classList.remove('hidden');
+            progressFill.style.width = '0%';
+            uploadStatus.textContent = 'Uploading...';
+            
+            const formData = new FormData();
+            formData.append('video_file', file);
+            
+            try {
+                const xhr = new XMLHttpRequest();
+                
+                // Track upload progress
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        progressFill.style.width = percentComplete + '%';
+                        uploadStatus.textContent = `Uploading... ${Math.round(percentComplete)}%`;
+                    }
+                });
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const result = JSON.parse(xhr.responseText);
+                        if (result.success) {
+                            progressFill.style.width = '100%';
+                            uploadStatus.textContent = 'Upload complete!';
+                            showMessage(result.message, 'success');
+                            
+                            // Switch to uploaded videos and refresh list
+                            document.getElementById('videoSource').value = 'uploaded';
+                            document.getElementById('uploadVideoGroup').classList.add('hidden');
+                            document.getElementById('uploadedVideoGroup').classList.remove('hidden');
+                            loadUploadedVideos();
+                            
+                            // Hide progress after 2 seconds
+                            setTimeout(() => {
+                                progressDiv.classList.add('hidden');
+                            }, 2000);
+                        } else {
+                            throw new Error(result.error);
+                        }
+                    } else {
+                        throw new Error('Upload failed');
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    throw new Error('Upload failed');
+                };
+                
+                xhr.open('POST', '/upload_video');
+                xhr.send(formData);
+                
+            } catch (error) {
+                progressDiv.classList.add('hidden');
+                showMessage('Upload failed: ' + error.message, 'error');
+            }
+        }
+        
+        async function loadUploadedVideos() {
+            try {
+                const response = await fetch('/list_uploaded_videos');
+                const data = await response.json();
+                
+                const select = document.getElementById('uploadedVideoSelect');
+                select.innerHTML = '';
+                
+                if (data.videos && data.videos.length > 0) {
+                    data.videos.forEach(video => {
+                        const option = document.createElement('option');
+                        option.value = video.filepath;
+                        option.textContent = `${video.filename} (${video.size_mb} MB)`;
+                        select.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No uploaded videos found';
+                    select.appendChild(option);
+                }
+                
+            } catch (error) {
+                showMessage('Error loading videos: ' + error.message, 'error');
+            }
+        }
+        
+        function updateParameterValues() {
+            const rangeInputs = ['threshold', 'minVisibility', 'stableFrames', 'confidenceThreshold', 'validationThreshold'];
+            rangeInputs.forEach(id => {
+                const input = document.getElementById(id);
+                const valueSpan = document.getElementById(id + 'Value');
+                valueSpan.textContent = input.value;
+            });
+        }
+        
+        async function loadCounterInfo() {
+            const counterName = selectedCounter;
+            if (!counterName) return;
+            
+            try {
+                const response = await fetch(`/get_counter_info/${counterName}`);
+                const info = await response.json();
+                
+                if (info.error) {
+                    showMessage(info.error, 'error');
+                    return;
+                }
+                
+                // Update parameter inputs with counter defaults
+                if (info.parameters.threshold) {
+                    document.getElementById('threshold').value = info.parameters.threshold.default;
+                }
+                if (info.parameters.min_visibility) {
+                    document.getElementById('minVisibility').value = info.parameters.min_visibility.default;
+                }
+                if (info.parameters.stable_frames) {
+                    document.getElementById('stableFrames').value = info.parameters.stable_frames.default;
+                }
+                if (info.parameters.confidence_threshold) {
+                    document.getElementById('confidenceThreshold').value = info.parameters.confidence_threshold.default;
+                }
+                if (info.parameters.enable_anti_cheat) {
+                    document.getElementById('enableAntiCheat').checked = info.parameters.enable_anti_cheat.default;
+                }
+                if (info.parameters.validation_threshold) {
+                    document.getElementById('validationThreshold').value = info.parameters.validation_threshold.default;
+                }
+                
+                updateParameterValues();
+                
+                // Update controls visibility based on loaded info
+                updateControlsVisibility();
+                
+                // Show/hide validation threshold based on anti-cheat
+                const validationGroup = document.getElementById('validationThresholdGroup');
+                if (info.parameters.enable_anti_cheat) {
+                    validationGroup.style.display = info.parameters.enable_anti_cheat.default ? 'block' : 'none';
+                }
+                
+            } catch (error) {
+                showMessage('Error loading counter info: ' + error.message, 'error');
+            }
+        }
+        
+        async function startCounter() {
+            if (!selectedCounter) {
+                showMessage('Please select a counter first', 'error');
+                return;
+            }
+            
+            const videoSource = document.getElementById('videoSource').value;
+            let finalVideoSource = videoSource;
+            
+            if (videoSource === 'uploaded') {
+                finalVideoSource = document.getElementById('uploadedVideoSelect').value;
+                if (!finalVideoSource) {
+                    showMessage('Please select an uploaded video', 'error');
+                    return;
+                }
+            } else if (videoSource === 'custom') {
+                finalVideoSource = document.getElementById('customVideoPath').value;
+                if (!finalVideoSource) {
+                    showMessage('Please enter a video file path', 'error');
+                    return;
+                }
+            } else if (videoSource === 'upload') {
+                showMessage('Please upload a video file first', 'error');
+                return;
+            }
+            
+            // Collect parameters
+            const parameters = {
+                threshold: parseFloat(document.getElementById('threshold').value),
+                min_visibility: parseFloat(document.getElementById('minVisibility').value),
+                stable_frames: parseInt(document.getElementById('stableFrames').value),
+                enable_anti_cheat: document.getElementById('enableAntiCheat').checked,
+                validation_threshold: parseFloat(document.getElementById('validationThreshold').value)
+            };
+            
+            try {
+                const response = await fetch('/start_counter', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        counter: selectedCounter,
+                        video_source: finalVideoSource,
+                        parameters: parameters
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    isRunning = true;
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                    document.getElementById('saveBtn').disabled = false;
+                    
+                    // Start video feed with smooth transition
+                    const videoFeed = document.getElementById('videoFeed');
+                    const placeholder = document.getElementById('videoPlaceholder');
+                    
+                    videoFeed.src = '/video_feed';
+                    videoFeed.classList.remove('video-hidden');
+                    videoFeed.classList.add('video-visible');
+                    placeholder.classList.remove('video-visible');
+                    placeholder.classList.add('video-hidden');
+                    
+                    // Start updating session data
+                    updateInterval = setInterval(updateSessionData, 1000);
+                    
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error starting counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function stopCounter() {
+            try {
+                const response = await fetch('/stop_counter', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    isRunning = false;
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                    
+                    // Stop video feed
+                    document.getElementById('videoFeed').src = '';
+                    document.getElementById('videoFeed').classList.add('video-hidden');
+                    document.getElementById('videoPlaceholder').classList.remove('video-hidden');
+                    
+                    // Stop updating session data
+                    if (updateInterval) {
+                        clearInterval(updateInterval);
+                    }
+                    
+                    showMessage('Counter stopped', 'success');
+                } else {
+                    showMessage('Error stopping counter', 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error stopping counter: ' + error.message, 'error');
+            }
+        }
+        
+        async function saveSession() {
+            try {
+                // Show loading state
+                const saveBtn = document.getElementById('saveBtn');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = '💾 Saving...';
+                saveBtn.disabled = true;
+                
+                const response = await fetch('/save_session', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(`✅ Session saved successfully: ${result.filename}`, 'success');
+                    saveBtn.textContent = '✅ Saved!';
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        saveBtn.textContent = originalText;
+                        saveBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    showMessage(`❌ Save failed: ${result.error}`, 'error');
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
+                }
+                
+            } catch (error) {
+                showMessage(`❌ Save error: ${error.message}`, 'error');
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.textContent = '💾 Save Session';
+                saveBtn.disabled = false;
+            }
+        }
+        
+        async function updateSessionData() {
+            if (!isRunning) return;
+            
+            try {
+                const response = await fetch('/get_session_data');
+                const data = await response.json();
+                
+                // Update display
+                document.getElementById('currentCount').textContent = `Count: ${data.current_count}`;
+                document.getElementById('counterName').textContent = data.counter_name || 'No counter selected';
+                document.getElementById('startTime').textContent = data.start_time ? 
+                    new Date(data.start_time).toLocaleString() : 'Not started';
+                document.getElementById('totalReps').textContent = data.counts.length;
+                document.getElementById('currentParams').textContent = Object.keys(data.parameters).length > 0 ? 
+                    JSON.stringify(data.parameters) : 'Default parameters';
+                
+                // Update count history with better formatting
+                const historyDiv = document.getElementById('countHistory');
+                if (data.counts.length > 0) {
+                    const recentCounts = data.counts.slice(-10); // Show last 10 counts
+                    historyDiv.innerHTML = recentCounts.map((count, index) => {
+                        const time = new Date(count.timestamp).toLocaleTimeString();
+                        const confidence = count.confidence !== undefined ? count.confidence.toFixed(2) : 
+                                         (count.validation_score ? count.validation_score.toFixed(2) : 'N/A');
+                        return `<div class="count-entry">
+                            <span class="count-number">#${count.count}</span>
+                            <span class="count-time">${time}</span>
+                            <span class="count-confidence">Score: ${confidence}</span>
+                        </div>`;
+                    }).join('');
+                } else {
+                    historyDiv.innerHTML = '<p class="no-counts">No counts recorded yet</p>';
+                }
+                
+            } catch (error) {
+                // Silently handle session data errors
+                return;
+            }
+        }
+        
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('statusMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `status-message status-${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
+        }
+        
+        async function adjustCenterLine(adjustment) {
+            try {
+                const response = await fetch('/adjust_center_line', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        adjustment: adjustment
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update both the slider and the display value
+                    const sliderElement = document.getElementById('centerLineSlider');
+                    const valueElement = document.getElementById('centerLineSliderValue');
+                    
+                    sliderElement.value = result.new_center_line;
+                    valueElement.textContent = result.new_center_line.toFixed(1);
+                    
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error adjusting center line: ' + error.message, 'error');
+            }
+        }
+        
+        async function resetCalibration() {
+            try {
+                const response = await fetch('/reset_calibration', {
+                    method: 'POST'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Reset slider to middle position
+                    const sliderElement = document.getElementById('centerLineSlider');
+                    const valueElement = document.getElementById('centerLineSliderValue');
+                    
+                    sliderElement.value = 500;
+                    valueElement.textContent = 'Auto';
+                    
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error resetting calibration: ' + error.message, 'error');
+            }
+        }
+        
+        async function adjustSensitivity(direction) {
+            try {
+                const response = await fetch('/adjust_sensitivity', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        direction: direction
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error adjusting sensitivity: ' + error.message, 'error');
+            }
+        }
+        
+        function adjustCenterLineFromSlider(sliderValue) {
+            const newValue = parseFloat(sliderValue);
+            
+            // For sliders, use absolute positioning instead of relative adjustments
+            adjustCenterLineAbsolute(newValue);
+        }
+        
+        function adjustSensitivityFromSlider(sliderValue) {
+            adjustSensitivityAbsolute(parseFloat(sliderValue));
+        }
+        
+        function adjustCenterLineQuick(pixels) {
+            // Update slider to reflect change
+            const slider = document.getElementById('centerLineSlider');
+            const currentValue = parseFloat(slider.value);
+            const newValue = currentValue + pixels;
+            const clampedValue = Math.max(50, Math.min(1000, newValue)); // Clamp to range
+            
+            slider.value = clampedValue;
+            document.getElementById('centerLineSliderValue').textContent = clampedValue;
+            
+            // Use the absolute positioning method
+            adjustCenterLineAbsolute(clampedValue);
+        }
+        
+        async function adjustCenterLineAbsolute(pixelValue) {
+            try {
+                document.getElementById('centerLineStatus').textContent = 'Applying...';
+                document.getElementById('centerLineStatus').className = 'slider-status working';
+                
+                const response = await fetch('/adjust_center_line_absolute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        position: pixelValue
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('centerLineStatus').textContent = `Set to ${pixelValue}px`;
+                    document.getElementById('centerLineStatus').className = 'slider-status active';
+                    showMessage(result.message, 'success');
+                } else {
+                    document.getElementById('centerLineStatus').textContent = 'Failed to adjust';
+                    document.getElementById('centerLineStatus').className = 'slider-status ready';
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                document.getElementById('centerLineStatus').textContent = 'Error occurred';
+                document.getElementById('centerLineStatus').className = 'slider-status ready';
+                showMessage('Error adjusting center line: ' + error.message, 'error');
+            }
+        }
+        
+        async function adjustSensitivityAbsolute(value) {
+            try {
+                const response = await fetch('/adjust_sensitivity_absolute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        value: value
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage(result.message, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+                
+            } catch (error) {
+                showMessage('Error adjusting sensitivity: ' + error.message, 'error');
+            }
+        }
+        
+        async function startRecording() {
+            try {
+                if (!isRunning) {
+                    showMessage('⚠️ Please start a counter first before recording', 'error');
+                    return;
+                }
+                
+                // Update UI
+                document.getElementById('startRecordingBtn').disabled = true;
+                document.getElementById('stopRecordingBtn').disabled = false;
+                document.getElementById('recordingStatus').textContent = 'Starting recording...';
+                document.getElementById('recordingStatus').className = 'recording-status recording';
+                
+                // Start backend recording
+                const response = await fetch('/start_recording', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    isRecording = true;
+                    document.getElementById('recordingStatus').textContent = '🔴 Recording...';
+                    document.getElementById('recordingInfo').textContent = `Started: ${new Date().toLocaleTimeString()}`;
+                    showMessage('📹 Recording started', 'success');
+                } else {
+                    throw new Error(result.error);
+                }
+                
+            } catch (error) {
+                document.getElementById('startRecordingBtn').disabled = false;
+                document.getElementById('stopRecordingBtn').disabled = true;
+                document.getElementById('recordingStatus').textContent = 'Failed to start recording';
+                document.getElementById('recordingStatus').className = 'recording-status ready';
+                showMessage(`❌ Recording failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function stopRecording() {
+            try {
+                document.getElementById('stopRecordingBtn').disabled = true;
+                document.getElementById('recordingStatus').textContent = 'Stopping recording...';
+                
+                const response = await fetch('/stop_recording', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    isRecording = false;
+                    document.getElementById('startRecordingBtn').disabled = false;
+                    document.getElementById('downloadRecordingBtn').disabled = false;
+                    document.getElementById('recordingStatus').textContent = '✅ Recording complete';
+                    document.getElementById('recordingStatus').className = 'recording-status ready';
+                    document.getElementById('recordingInfo').textContent = `Saved: ${result.filename} (${result.duration || 'unknown'} seconds)`;
+                    showMessage(`✅ Recording saved: ${result.filename}`, 'success');
+                } else {
+                    throw new Error(result.error);
+                }
+                
+            } catch (error) {
+                document.getElementById('stopRecordingBtn').disabled = false;
+                showMessage(`❌ Stop recording failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function downloadRecording() {
+            try {
+                const response = await fetch('/download_latest_recording');
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    const filename = response.headers.get('content-disposition')?.split('filename=')[1] || 'recording.mp4';
+                    
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = filename.replace(/"/g, '');
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showMessage('💾 Recording downloaded successfully!', 'success');
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Download failed');
+                }
+                
+            } catch (error) {
+                showMessage(`❌ Download failed: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html> 

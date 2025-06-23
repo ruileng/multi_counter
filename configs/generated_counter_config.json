@@ -1,0 +1,220 @@
+[
+  {
+    "name": "SquatCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "RIGHT_HIP",
+    "aux_landmark_name": "LEFT_HIP",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": false,
+    "validation_landmarks": [],
+    "validation_threshold": 0.03
+  },
+  {
+    "name": "JumpingJackCounter",
+    "logic_type": "jumping_jack",
+    "direction": "up-first",
+    "landmark_name": "NOSE",
+    "aux_landmark_name": "LEFT_SHOULDER",
+    "min_conf": 0.6,
+    "threshold": 0.15,
+    "stable_frames": 2,
+    "enable_anti_cheat": false,
+    "validation_landmarks": [],
+    "validation_threshold": 0.03
+  },
+  {
+    "name": "SitUpCounter",
+    "logic_type": "vertical_movement",
+    "direction": "up-first",
+    "landmark_name": "LEFT_SHOULDER",
+    "aux_landmark_name": "RIGHT_HIP",
+    "min_conf": 0.7,
+    "threshold": 0.09,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_SHOULDER",
+      "RIGHT_HIP"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "HighKneeLiftCounter",
+    "logic_type": "vertical_movement",
+    "direction": "up-first",
+    "landmark_name": "RIGHT_KNEE",
+    "aux_landmark_name": "LEFT_KNEE",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_HIP",
+      "RIGHT_HIP",
+      "LEFT_KNEE"
+    ],
+    "validation_threshold": 0.03
+  },
+  {
+    "name": "BurpeesCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_HIP",
+    "aux_landmark_name": "RIGHT_KNEE",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_HIP",
+      "LEFT_KNEE",
+      "LEFT_ANCLE"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "PlankHoldCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_SHOULDER",
+    "aux_landmark_name": "RIGHT_SHOULDER",
+    "min_conf": 0.9,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_SHOULDER",
+      "RIGHT_SHOULDER",
+      "MOUTH_LEFT"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "LegRaisesCounter",
+    "logic_type": "vertical_movement",
+    "direction": "up-first",
+    "landmark_name": "RIGHT_KNEE",
+    "aux_landmark_name": null,
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_KNEE",
+      "RIGHT_ANCLE",
+      "LEFT_HEEL"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "JumpingRopeCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_HEEL",
+    "aux_landmark_name": null,
+    "min_conf": 0.08,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "RIGHT_HEEL",
+      "LEFT_KNEE",
+      "LEFT_ANKLE"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "WallSitsCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_KNEE",
+    "aux_landmark_name": "RIGHT_KNEE",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_KNEE",
+      "RIGHT_KNEE",
+      "LEFT_HEEL"
+    ],
+    "validation_threshold": 0.02
+  },
+  {
+    "name": "StarJumpsCounter",
+    "logic_type": "vertical_movement",
+    "direction": "up-first",
+    "landmark_name": "LEFT_KNEE",
+    "aux_landmark_name": "LEFT_ANKLE",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_KNEE",
+      "LEFT_ANKLE",
+      "RIGHT_ANKLE"
+    ],
+    "validation_threshold": 0.03
+  },
+  {
+    "name": "PushUpCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_SHOULDER",
+    "aux_landmark_name": "RIGHT_SHOULDER",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_HIP",
+      "LEFT_KNEE",
+      "LEFT_ANKLE"
+    ],
+    "validation_threshold": 0.02,
+    "detection_type": "mediapipe",
+    "object_class": "human"
+  },
+  {
+    "name": "LungesCounter",
+    "logic_type": "vertical_movement",
+    "direction": "down-first",
+    "landmark_name": "LEFT_KNEE",
+    "aux_landmark_name": "RIGHT_KNEE",
+    "min_conf": 0.7,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_HIP",
+      "RIGHT_HIP",
+      "LEFT_ANKLE",
+      "RIGHT_ANKLE"
+    ],
+    "validation_threshold": 0.02,
+    "detection_type": "mediapipe",
+    "object_class": "human"
+  },
+  {
+    "name": "BicepCurlCounter",
+    "logic_type": "vertical_movement",
+    "direction": "up-first",
+    "landmark_name": "LEFT_ELBOW",
+    "aux_landmark_name": "RIGHT_ELBOW",
+    "min_conf": 0.8,
+    "threshold": 0.1,
+    "stable_frames": 3,
+    "enable_anti_cheat": true,
+    "validation_landmarks": [
+      "LEFT_SHOULDER",
+      "RIGHT_SHOULDER"
+    ],
+    "validation_threshold": 0.03,
+    "detection_type": "mediapipe",
+    "object_class": "human"
+  }
+]

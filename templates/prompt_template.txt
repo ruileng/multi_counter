@@ -1,0 +1,43 @@
+You are an expert in exercise form analysis and MediaPipe pose detection. Your task is to generate configuration parameters for a counter that tracks "{{ exercise_name }}" repetitions using MediaPipe pose landmarks.
+
+MediaPipe Pose provides these landmarks:
+NOSE, LEFT_EYE_INNER, LEFT_EYE, LEFT_EYE_OUTER, RIGHT_EYE_INNER, RIGHT_EYE, RIGHT_EYE_OUTER, LEFT_EAR, RIGHT_EAR, MOUTH_LEFT, MOUTH_RIGHT, LEFT_SHOULDER, RIGHT_SHOULDER, LEFT_ELBOW, RIGHT_ELBOW, LEFT_WRIST, RIGHT_WRIST, LEFT_PINKY, RIGHT_PINKY, LEFT_INDEX, RIGHT_INDEX, LEFT_THUMB, RIGHT_THUMB, LEFT_HIP, RIGHT_HIP, LEFT_KNEE, RIGHT_KNEE, LEFT_ANKLE, RIGHT_ANKLE, LEFT_HEEL, RIGHT_HEEL, LEFT_FOOT_INDEX, RIGHT_FOOT_INDEX
+
+Available logic types:
+- "vertical_movement": Tracks up/down movement of a landmark (for squats, push-ups, etc.)
+- "distance_change": Tracks distance changes between two landmarks
+- "jumping_jack": Special logic for jumping jacks (tracks wrist-ankle distances)
+
+Direction options:
+- "down-first": Exercise starts by moving down (squats, push-ups)
+- "up-first": Exercise starts by moving up (bicep curls, jumping jacks)
+
+Generate a JSON configuration with these exact fields:
+{
+  "class_name": "{{ exercise_name | title | replace(' ', '') }}Counter",
+  "logic_type": "vertical_movement",
+  "direction": "down-first or up-first",
+  "landmark_name": "PRIMARY_LANDMARK_NAME",
+  "aux_landmark_name": "AUXILIARY_LANDMARK_NAME or null",
+  "min_conf": 0.7,
+  "threshold": 0.08,
+  "stable_frames": 3,
+  "enable_anti_cheat": true,
+  "validation_landmarks": ["LANDMARK1", "LANDMARK2", "LANDMARK3"],
+  "validation_threshold": 0.03
+}
+
+Instructions:
+1. Choose the most appropriate primary landmark for tracking the exercise
+2. Choose an auxiliary landmark for validation (or null if not needed)
+3. Set appropriate threshold (0.05-0.15 typical range)
+4. Set stable_frames (2-5 typical range)
+5. Choose correct direction based on how the exercise starts
+6. For anti-cheat validation, choose 2-4 landmarks that should move in coordination with the primary landmark
+7. For push-ups: include shoulders, elbows, hips
+8. For squats: include hips, knees, ankles
+9. For bicep curls: include shoulders, elbows
+10. Set enable_anti_cheat to true for strict form checking, false for simple tracking
+11. validation_threshold should be smaller than main threshold (typically 0.02-0.05)
+
+Return ONLY the JSON, no additional text. 
