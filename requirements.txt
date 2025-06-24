@@ -2,10 +2,11 @@
 Flask==3.0.3
 Jinja2==3.1.6
 Werkzeug==3.0.6
+gunicorn==21.2.0
 
 # CPU-Only AI/ML Libraries (for cloud deployment without GPU)
-torch==2.0.0+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
-torchvision==0.15.1+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.0.0
+torchvision==0.15.1
 ultralytics==8.3.157
 mediapipe==0.10.11
 
@@ -16,7 +17,14 @@ opencv-python-headless==4.6.0.66
 numpy==1.24.4
 Pillow==10.4.0
 
+# Session Management & Caching
+redis==5.0.1
+Flask-Session==0.5.0
+
 # Utilities
 requests==2.27.1
 PyYAML==6.0.2
-tqdm==4.64.0 
+tqdm==4.64.0
+
+# Production Dependencies
+python-dotenv==1.0.0 
