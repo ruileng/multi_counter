@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Action Counter - Web Interface</title>
+    <title>多动作计数器 - 网页界面</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -63,24 +63,6 @@
             padding-right: 10px;
             border-top: 2px solid #e0e0e0;
             padding-top: 20px;
-        }
-        
-        .video-controls-area::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .video-controls-area::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-        
-        .video-controls-area::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-        
-        .video-controls-area::-webkit-scrollbar-thumb:hover {
-            background: #555;
         }
         
         .controls-section {
@@ -149,7 +131,6 @@
             background: white;
             border-radius: 6px;
             border: 1px solid #ddd;
-            scroll-margin-top: 20px;
         }
         
         .control-group h3 {
@@ -210,13 +191,6 @@
             background: linear-gradient(135deg, #51cf66, #40c057);
         }
         
-        .btn-refresh {
-            background: linear-gradient(135deg, #74c0fc, #339af0);
-            margin-top: 10px;
-            padding: 8px 16px;
-            font-size: 12px;
-        }
-        
         .parameter-input {
             display: flex;
             align-items: center;
@@ -234,244 +208,6 @@
             font-weight: 600;
             color: #667eea;
             font-size: 0.85em;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-        }
-        
-        .session-info {
-            background: #e3f2fd;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        
-        .session-info h4 {
-            margin-top: 0;
-            margin-bottom: 8px;
-            color: #1976d2;
-            font-size: 0.95em;
-        }
-        
-        .session-info p {
-            margin: 4px 0;
-            font-size: 0.8em;
-        }
-        
-        .count-history {
-            max-height: 200px;
-            overflow-y: auto;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 8px;
-        }
-        
-        .count-entry {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 8px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.85em;
-            transition: background-color 0.2s;
-        }
-        
-        .count-entry:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .count-entry:last-child {
-            border-bottom: none;
-        }
-        
-        .count-number {
-            font-weight: bold;
-            color: #2e7d32;
-            min-width: 30px;
-        }
-        
-        .count-time {
-            color: #666;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-        
-        .count-confidence {
-            color: #1976d2;
-            font-size: 0.8em;
-            background: #e3f2fd;
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-        
-        .no-counts {
-            text-align: center;
-            color: #999;
-            font-style: italic;
-            margin: 20px 0;
-        }
-        
-        .status-message {
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-        }
-        
-        .status-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .status-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .video-hidden {
-            opacity: 0 !important;
-            pointer-events: none;
-        }
-        
-        .video-visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        
-        .upload-area {
-            border: 2px dashed #667eea;
-            border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #f8f9ff;
-        }
-        
-        .upload-area:hover {
-            border-color: #5a67d8;
-            background: #f0f4ff;
-        }
-        
-        .upload-area.dragover {
-            border-color: #4c51bf;
-            background: #e6fffa;
-            transform: scale(1.02);
-        }
-        
-        .upload-content p {
-            margin: 5px 0;
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .upload-info {
-            font-size: 0.85em !important;
-            color: #888 !important;
-            font-weight: normal !important;
-        }
-        
-        .upload-progress {
-            margin-top: 15px;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        
-        .help-text {
-            font-size: 0.75em;
-            color: #666;
-            margin-top: 3px;
-            margin-bottom: 0;
-            font-style: italic;
-        }
-        
-        .counter-info {
-            margin-top: 10px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .counter-type {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .counter-description {
-            font-size: 0.85em;
-            color: #777;
-            font-style: italic;
-        }
-        
-        .detection-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: bold;
-            margin-left: 5px;
-        }
-        
-        .badge-mediapipe {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .badge-yolo {
-            background: #e8f5e8;
-            color: #388e3c;
-        }
-        
-        .counter-category {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9ff;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .counter-category h4 {
-            margin: 0 0 10px 0;
-            color: #333;
-            font-size: 1.1em;
-        }
-        
-        .counter-select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            background: white;
         }
         
         .center-line-controls {
@@ -513,48 +249,75 @@
             transform: translateY(-1px);
         }
         
-        .btn-fine {
-            flex: 0.5 !important;
-            font-size: 11px !important;
-            padding: 6px 8px !important;
-            opacity: 0.8;
+        .counter-category {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
         }
         
-        .btn-fine:hover {
-            opacity: 1;
-        }
-        
-        .center-line-display {
-            background: #f0f8ff !important;
-            border: 2px solid #4CAF50 !important;
-            font-weight: bold;
-            text-align: center;
-            color: #2e7d32;
-        }
-        
-        .counter-type-info {
-            background: #e8f5e8;
-            padding: 8px;
-            border-radius: 4px;
-            border-left: 4px solid #4CAF50;
-        }
-        
-        .counter-type-info p {
-            margin: 3px 0;
-            font-size: 0.8em;
-        }
-        
-        .parameter-section {
-            margin-bottom: 15px;
-            padding: 12px;
-            background: #f9f9f9;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .parameter-section h5 {
+        .counter-category h4 {
             margin: 0 0 10px 0;
-            color: #555;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .counter-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .video-hidden {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+        
+        .video-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        /* Center line controls styling */
+        #centerLineGroup {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        #centerLineGroup h3 {
+            color: #2e7d32;
+            margin-top: 0;
+            margin-bottom: 6px;
             font-size: 0.95em;
         }
         
@@ -564,11 +327,8 @@
             border-radius: 4px;
             border-left: 4px solid #FFC107;
             font-family: monospace;
-        }
-        
-        .keyboard-controls-info p {
-            margin: 5px 0;
             font-size: 0.85em;
+            margin-top: 10px;
         }
         
         kbd {
@@ -580,43 +340,6 @@
             font-weight: bold;
             box-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        
-        /* Improved responsive design */
-        @media (max-width: 1200px) {
-            .main-content {
-                max-height: none;
-            }
-            
-            .controls-section {
-                max-height: none;
-            }
-            
-            .video-container {
-                height: 300px;
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .container {
-                margin: 10px;
-            }
-            
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .video-container {
-                height: 250px;
-            }
-            
-            .center-line-controls {
-                flex-direction: column;
-            }
-            
-            .btn-adjust, .btn-reset {
-                min-width: auto;
-            }
-        }
 
         @media (max-width: 768px) {
             .main-content {
@@ -627,191 +350,14 @@
                 border-right: none;
                 border-bottom: 1px solid #eee;
             }
-            
-            .controls-section {
-                padding: 15px;
-            }
-            
-            .counter-category {
-                padding: 10px;
-            }
-            
-            .parameter-input {
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .parameter-input .range-value {
-                min-width: auto;
-                text-align: left;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .header {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.5em;
-            }
-            
-            .video-container {
-                height: 200px;
-            }
-            
-            .control-group {
-                padding: 10px;
-                margin-bottom: 15px;
-            }
-            
-            .control-group h3 {
-                font-size: 1.1em;
-            }
-            
-            button {
-                padding: 8px;
-                font-size: 12px;
-            }
-        }
-        
-        /* Remove sticky positioning from center line controls */
-        #centerLineGroup {
-            background: #f0f8ff;
-            border: 2px solid #4CAF50;
-            border-radius: 6px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-        
-        .slider-status {
-            font-size: 0.7em;
-            padding: 3px 6px;
-            border-radius: 3px;
-            margin-top: 3px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .slider-status.ready {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #4CAF50;
-        }
-        
-        .slider-status.active {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffc107;
-        }
-        
-        .slider-status.working {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #17a2b8;
-        }
-        
-        /* Enhanced slider styling */
-        #centerLineSlider, #sensitivitySlider {
-            height: 8px;
-            background: linear-gradient(to right, #ddd, #4CAF50, #ddd);
-            outline: none;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-        
-        #centerLineSlider:hover, #sensitivitySlider:hover {
-            opacity: 1;
-        }
-        
-        #centerLineSlider::-webkit-slider-thumb, #sensitivitySlider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #4CAF50;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        /* Make video area clearly fixed */
-        .video-area {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        #centerLineGroup h3 {
-            color: #2e7d32;
-            margin-top: 0;
-            margin-bottom: 6px;
-            font-size: 0.95em;
-        }
-        
-        #centerLineGroup p {
-            margin: 4px 0;
-            font-size: 0.8em;
-        }
-        
-        #centerLineGroup em {
-            font-size: 0.75em;
-            color: #666;
-        }
-        
-        /* Recording controls styles */
-        .recording-status {
-            font-size: 0.85em;
-            padding: 6px 10px;
-            border-radius: 4px;
-            margin-top: 8px;
-            text-align: center;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .recording-status.ready {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #4CAF50;
-        }
-        
-        .recording-status.recording {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #f44336;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-        
-        .recording-info {
-            font-size: 0.75em;
-            color: #666;
-            text-align: center;
-            margin-top: 5px;
-            font-family: monospace;
-        }
-        
-        #recordingGroup {
-            background: #fff8e1;
-            border-left: 4px solid #FF9800;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏋️ Multi Action Counter</h1>
-            <p>Real-time exercise counting with AI pose detection</p>
+            <h1>🏋️ 多动作计数器</h1>
+            <p>实时运动计数与AI姿势检测</p>
         </div>
         
         <div class="main-content">
@@ -819,15 +365,15 @@
                 <!-- Fixed Video Area -->
                 <div class="video-area">
                     <div class="video-container">
-                        <img id="videoFeed" src="" alt="Video feed will appear here" class="video-hidden">
+                        <img id="videoFeed" src="" alt="视频流将在此显示" class="video-hidden">
                         <div id="videoPlaceholder" class="video-placeholder video-visible">
-                            Select a counter and click Start to begin
+                            选择计数器并点击开始
                         </div>
                     </div>
                     
                     <div class="count-display">
-                        <h2 id="currentCount">Count: 0</h2>
-                        <p id="counterName">No counter selected</p>
+                        <h2 id="currentCount">计数: 0</h2>
+                        <p id="counterName">未选择计数器</p>
                     </div>
                 </div>
                 
@@ -835,127 +381,80 @@
                 <div class="video-controls-area">
                     <!-- Parameters Section -->
                     <div class="control-group" id="parametersGroup">
-                        <h3>⚙️ Parameters</h3>
-                        <p>Adjust these parameters to fine-tune the counter accuracy:</p>
-                        
-                        <div class="form-group">
-                            <label for="threshold">Movement Threshold:</label>
-                            <div class="parameter-input">
-                                <input type="range" id="threshold" min="0.01" max="0.3" step="0.01" value="0.1">
-                                <span class="range-value" id="thresholdValue">0.1</span>
-                            </div>
-                            <p class="help-text">Sensitivity for detecting movement/pose changes</p>
-                            <div class="slider-status" id="thresholdStatus">Ready to adjust when counter is running</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="minVisibility">Min Visibility:</label>
-                            <div class="parameter-input">
-                                <input type="range" id="minVisibility" min="0.1" max="1.0" step="0.1" value="0.7">
-                                <span class="range-value" id="minVisibilityValue">0.7</span>
-                            </div>
-                            <p class="help-text">Minimum pose visibility for MediaPipe counters</p>
-                            <div class="slider-status" id="visibilityStatus">Ready to adjust when counter is running</div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="stableFrames">Stable Frames:</label>
-                            <div class="parameter-input">
-                                <input type="range" id="stableFrames" min="1" max="10" step="1" value="3">
-                                <span class="range-value" id="stableFramesValue">3</span>
-                            </div>
-                            <p class="help-text">Frames needed to confirm detection</p>
-                            <div class="slider-status" id="stableFramesStatus">Ready to adjust when counter is running</div>
-                        </div>
-                        
-                        <div class="form-group" id="confidenceThresholdGroup">
-                            <label for="confidenceThreshold">Detection Confidence:</label>
-                            <div class="parameter-input">
-                                <input type="range" id="confidenceThreshold" min="0.1" max="0.9" step="0.05" value="0.5">
-                                <span class="range-value" id="confidenceThresholdValue">0.5</span>
-                            </div>
-                            <p class="help-text">YOLO detection confidence threshold</p>
-                            <div class="slider-status" id="confidenceStatus">Ready to adjust when counter is running</div>
-                        </div>
-                        
-                        <div class="form-group" id="antiCheatGroup">
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="enableAntiCheat">
-                                <label for="enableAntiCheat">Enable Anti-Cheat Validation</label>
+                        <h3>⚙️ 参数设置</h3>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                            根据所选计数器类型调整检测参数，提高计数准确性：
+                        </p>
+                        <div id="parameterControls"></div>
+                        <div style="font-size: 0.8em; color: #555; margin-top: 10px; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                            <strong>📖 参数说明 (Parameter Descriptions)：</strong><br>
+                            • <strong>Threshold (检测阈值)</strong>: 最重要参数，控制检测敏感度，值越小越敏感<br>
+                            • <strong>Confidence Threshold (置信度阈值)</strong>: YOLO目标检测的最小置信度要求<br>
+                            • <strong>Validation Threshold (验证阈值)</strong>: 动作验证的严格程度<br>
+                            • <strong>Stable Frames (稳定帧数)</strong>: 需要连续检测多少帧才确认动作<br>
+                            • <strong>Calibration Frames (校准帧数)</strong>: 自动校准需要的帧数<br>
+                            • <strong>Min Visibility (最小可见度)</strong>: 人体关键点可见度要求<br>
+                            • <strong>Anti-Cheat (防作弊检测)</strong>: 启用动作验证机制
                             </div>
                         </div>
                         
-                        <div class="form-group" id="validationThresholdGroup">
-                            <label for="validationThreshold">Validation Threshold:</label>
-                            <div class="parameter-input">
-                                <input type="range" id="validationThreshold" min="0.01" max="0.1" step="0.01" value="0.03">
-                                <span class="range-value" id="validationThresholdValue">0.03</span>
-                            </div>
-                            <p class="help-text">Anti-cheat validation sensitivity</p>
-                            <div class="slider-status" id="validationStatus">Ready to adjust when counter is running</div>
-                        </div>
-                    </div>
-                    
                     <!-- Center Line Controls -->
-                    <div class="control-group" id="centerLineGroup">
-                        <h3>🎯 Center Line Controls</h3>
-                        <p>Adjust the reference line for YOLO counter detection:</p>
-                        <p><em>Note: These controls work with Animal and Object counters when running</em></p>
+                    <div class="control-group hidden" id="centerLineGroup">
+                        <h3>🎯 中心线控制 (YOLO计数器)</h3>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                            调整YOLO计数器的检测参考线位置，用于动物跳跃和物体弹跳检测：
+                        </p>
                         
                         <div class="form-group">
-                            <label for="centerLineSlider">Center Line Position:</label>
+                            <label for="centerLineSlider">
+                                Center Line Position (中心线位置) - Pixels:
+                                <span style="font-size: 0.8em; color: #888;">调整检测的目标位置</span>
+                            </label>
                             <div class="parameter-input">
-                                <input type="range" id="centerLineSlider" min="50" max="1000" step="5" value="500">
-                                <span class="range-value" id="centerLineSliderValue">500</span>
+                                <input type="range" id="centerLineSlider" min="50" max="2000" step="10" value="1000">
+                                <span class="range-value" id="centerLineSliderValue">1000</span>
                             </div>
-                            <p class="help-text">Drag slider to adjust the yellow reference line position (50-1000px)</p>
-                            <div class="slider-status" id="centerLineStatus">Ready to adjust when counter is running</div>
+                            <div style="font-size: 0.8em; color: #555; margin-top: 5px;">
+                                • Animal Counters (动物计数器)：设置跳跃目标线高度<br>
+                                • Object Counters (物体计数器)：设置地面参考线位置
+                        </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="sensitivitySlider">Detection Sensitivity:</label>
+                            <label for="sensitivitySlider">
+                                Sensitivity Multiplier (检测灵敏度) - Factor:
+                                <span style="font-size: 0.8em; color: #888;">调整检测区域大小</span>
+                            </label>
                             <div class="parameter-input">
                                 <input type="range" id="sensitivitySlider" min="0.3" max="3.0" step="0.1" value="1.0">
                                 <span class="range-value" id="sensitivitySliderValue">1.0</span>
                             </div>
-                            <p class="help-text">Lower = more sensitive, Higher = less sensitive (0.3-3.0)</p>
-                            <div class="slider-status" id="sensitivityStatus">Ready to adjust when counter is running</div>
+                            <div style="font-size: 0.8em; color: #555; margin-top: 5px;">
+                                • Lower Value (值越小)：检测越敏感，更容易触发计数<br>
+                                • Higher Value (值越大)：检测越宽松，需要更明显的动作
+                            </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>Quick Adjustment:</label>
+                            <label>Quick Adjustment Buttons (快速调整按钮):</label>
                             <div class="center-line-controls">
-                                <button type="button" onclick="adjustCenterLineQuick(-20)" class="btn-adjust" title="Move line up 20px">⬆️ Up</button>
-                                <button type="button" onclick="adjustCenterLineQuick(20)" class="btn-adjust" title="Move line down 20px">⬇️ Down</button>
-                                <button type="button" onclick="resetCalibration()" class="btn-reset" title="Reset to automatic calibration">🔄 Reset</button>
+                                <button type="button" onclick="adjustCenterLine(-0.05)" class="btn-adjust" title="向上移动中心线10像素">⬆️ Up (向上)</button>
+                                <button type="button" onclick="adjustCenterLine(0.05)" class="btn-adjust" title="向下移动中心线10像素">⬇️ Down (向下)</button>
+                                <button type="button" onclick="resetCalibration()" class="btn-reset" title="重新自动校准检测线">🔄 Reset (重置校准)</button>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Counter Type Info:</label>
-                            <div id="counterTypeInfo" class="counter-type-info">
-                                <p><strong>Sports Ball:</strong> Yellow line = Ground reference</p>
-                                <p><strong>Animal:</strong> Yellow line = Jump target</p>
-                            </div>
+                            <div style="font-size: 0.8em; color: #555; margin-top: 5px;">
+                                每次点击调整约10像素，用于精细调节检测位置
                         </div>
                     </div>
                     
-                    <!-- Video Recording Controls -->
-                    <div class="control-group" id="recordingGroup">
-                        <h3>📹 Video Recording</h3>
-                        <p>Record your counting session with overlays for playback:</p>
-                        
-                        <div class="form-group">
-                            <div class="center-line-controls">
-                                <button type="button" id="startRecordingBtn" onclick="startRecording()" class="btn-adjust" title="Start recording video">🔴 Start Recording</button>
-                                <button type="button" id="stopRecordingBtn" onclick="stopRecording()" class="btn-adjust" disabled title="Stop recording">⏹️ Stop Recording</button>
-                                <button type="button" id="downloadRecordingBtn" onclick="downloadRecording()" class="btn-reset" disabled title="Download recorded video">💾 Download</button>
+                        <div class="keyboard-controls-info">
+                            <p><strong>🎮 键盘快捷键控制:</strong></p>
+                            <p><kbd>W</kbd>/<kbd>↑</kbd>: 中心线上移 | <kbd>S</kbd>/<kbd>↓</kbd>: 中心线下移</p>
+                            <p><kbd>+</kbd>: 降低灵敏度 (增大检测区域) | <kbd>-</kbd>: 提高灵敏度 (缩小检测区域)</p>
+                            <p><kbd>0</kbd>: 重置校准 (恢复自动检测)</p>
+                            <div style="margin-top: 8px; font-size: 0.8em; color: #666;">
+                                💡 提示：启动计数器后，系统会自动校准。如果检测不准确，可使用上述控制进行手动调整。
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <div class="recording-status" id="recordingStatus">Ready to record</div>
-                            <div class="recording-info" id="recordingInfo"></div>
                         </div>
                     </div>
                 </div>
@@ -965,17 +464,23 @@
                 <div id="statusMessage" class="status-message hidden"></div>
                 
                 <div class="control-group">
-                    <h3>🎯 Counter Selection</h3>
+                    <h3>🎯 计数器选择</h3>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        选择适合您需求的AI计数器类型：
+                    </div>
                     
                     <!-- Human Action Counters -->
                     <div class="counter-category">
-                        <h4>🏃‍♀️ Human Action Counters (MediaPipe)</h4>
+                        <h4>🏃‍♀️ 人体动作计数器 (MediaPipe AI)</h4>
+                        <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">
+                            基于人体姿态识别的运动计数，适用于健身训练和运动分析
+                        </div>
                         <div class="form-group">
                             <select id="humanCounterSelect" class="counter-select">
-                                <option value="">Select a human action counter...</option>
+                                <option value="">选择人体动作计数器...</option>
                                 {% for counter in counters.Human %}
                                 <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="human">
-                                    {{ counter.name }} - {{ counter.logic_type }}
+                                    {{ counter.name }} - {{ counter.logic_type }}动作检测
                                 </option>
                                 {% endfor %}
                             </select>
@@ -984,13 +489,16 @@
                     
                     <!-- Animal Counters -->
                     <div class="counter-category">
-                        <h4>🐾 Animal Counters (YOLO)</h4>
+                        <h4>🐾 动物计数器 (YOLO AI)</h4>
+                        <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">
+                            基于目标检测的动物行为计数，适用于宠物运动监测和研究
+                        </div>
                         <div class="form-group">
                             <select id="animalCounterSelect" class="counter-select">
-                                <option value="">Select an animal counter...</option>
+                                <option value="">选择动物计数器...</option>
                                 {% for counter in counters.Animal %}
                                 <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="animal">
-                                    {{ counter.name }} - {{ counter.object_class }} {{ counter.logic_type }}
+                                    {{ counter.name }} - {{ counter.object_class }}{{ counter.logic_type }}检测
                                 </option>
                                 {% endfor %}
                             </select>
@@ -999,13 +507,16 @@
                     
                     <!-- Object Counters -->
                     <div class="counter-category">
-                        <h4>🏀 Object Counters (YOLO)</h4>
+                        <h4>🏀 物体计数器 (YOLO AI)</h4>
+                        <div style="font-size: 0.8em; color: #666; margin-bottom: 10px;">
+                            基于目标检测的物体运动计数，适用于球类运动和物体追踪
+                        </div>
                         <div class="form-group">
                             <select id="objectCounterSelect" class="counter-select">
-                                <option value="">Select an object counter...</option>
+                                <option value="">选择物体计数器...</option>
                                 {% for counter in counters.Object %}
-                                <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="object" data-has-center-line="{{ counter.has_center_line }}">
-                                    {{ counter.name }} - {{ counter.object_class }} {{ counter.logic_type }}
+                                <option value="{{ counter.name }}" data-type="{{ counter.type }}" data-category="object">
+                                    {{ counter.name }} - {{ counter.object_class }}{{ counter.logic_type }}检测
                                 </option>
                                 {% endfor %}
                             </select>
@@ -1013,64 +524,72 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="videoSource">Video Source:</label>
+                        <label for="videoSource">视频源选择:</label>
                         <select id="videoSource">
-                            <option value="0">Webcam (Camera 0)</option>
-                            <option value="1">Webcam (Camera 1)</option>
-                            <option value="upload">Upload Video File</option>
-                            <option value="uploaded">Use Uploaded Video</option>
-                            <option value="custom">Custom File Path</option>
+                            <option value="0">摄像头 (摄像头 0) - 实时检测</option>
+                            <option value="1">摄像头 (摄像头 1) - 备用摄像头</option>
+                            <option value="upload">上传视频文件 - 分析录制视频</option>
+                            <option value="uploaded">使用已上传视频 - 选择历史视频</option>
                         </select>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                            💡 提示：摄像头用于实时检测，上传视频用于分析已录制的运动视频
+                        </div>
                     </div>
                     
                     <div class="form-group hidden" id="uploadVideoGroup">
-                        <label>Upload Video File:</label>
-                        <div class="upload-area" id="uploadArea">
-                            <div class="upload-content">
-                                <p>📁 Drag & drop video file here or click to browse</p>
-                                <p class="upload-info">Supported: MP4, AVI, MOV, MKV, WMV, FLV, WebM, M4V (Max: 100MB)</p>
-                            </div>
-                            <input type="file" id="videoFileInput" accept=".mp4,.avi,.mov,.mkv,.wmv,.flv,.webm,.m4v" style="display: none;">
-                        </div>
-                        <div id="uploadProgress" class="upload-progress hidden">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill"></div>
-                            </div>
-                            <p id="uploadStatus">Uploading...</p>
+                        <label>上传新视频文件:</label>
+                        <input type="file" id="videoFileInput" accept=".mp4,.avi,.mov,.mkv,.wmv,.flv,.webm,.m4v">
+                        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                            支持格式：MP4, AVI, MOV, MKV, WMV, FLV, WebM, M4V<br>
+                            推荐使用MP4格式，文件大小限制100MB
                         </div>
                     </div>
                     
                     <div class="form-group hidden" id="uploadedVideoGroup">
-                        <label for="uploadedVideoSelect">Select Uploaded Video:</label>
+                        <label for="uploadedVideoSelect">选择已上传的视频:</label>
                         <select id="uploadedVideoSelect">
-                            <option value="">Loading videos...</option>
+                            <option value="">加载中...</option>
                         </select>
-                        <button type="button" id="refreshVideosBtn" class="btn-refresh">🔄 Refresh List</button>
+                        <button type="button" onclick="loadUploadedVideos()" style="margin-top: 5px; padding: 5px 10px; font-size: 12px;">🔄 刷新视频列表</button>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                            选择之前上传的视频文件进行重新分析
                     </div>
-                    
-                    <div class="form-group hidden" id="customVideoGroup">
-                        <label for="customVideoPath">Video File Path (on server):</label>
-                        <input type="text" id="customVideoPath" placeholder="Enter video file path on server">
-                        <p class="help-text">Enter the full path to a video file on the server (e.g., /path/to/video.mp4)</p>
                     </div>
                 </div>
                 
                 <div class="control-group">
-                    <h3>🎮 Controls</h3>
-                    <button id="startBtn" onclick="startCounter()">🚀 Start Counter</button>
-                    <button id="stopBtn" onclick="stopCounter()" class="btn-stop" disabled>⏹️ Stop Counter</button>
-                    <button id="saveBtn" onclick="saveSession()" class="btn-save" disabled>💾 Save Session</button>
+                    <h3>🎮 计数控制</h3>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        控制计数器的启动、停止和数据保存：
+                    </div>
+                    <button id="startBtn" onclick="startCounter()" title="开始视频处理和动作计数">🚀 开始计数</button>
+                    <button id="stopBtn" onclick="stopCounter()" class="btn-stop" disabled title="停止当前的计数会话">⏹️ 停止计数</button>
+                    <button id="saveBtn" onclick="saveSession()" class="btn-save" disabled title="保存当前计数会话数据到文件">💾 保存会话数据</button>
+                    <div style="font-size: 0.8em; color: #555; margin-top: 10px; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                        <strong>📋 使用说明：</strong><br>
+                        1. 选择计数器类型和视频源<br>
+                        2. 调整参数设置（可选）<br>
+                        3. 点击"开始计数"启动检测<br>
+                        4. 系统自动校准后开始计数<br>
+                        5. 可随时保存会话数据
+                    </div>
                 </div>
                 
-                <div class="session-info" id="sessionInfo">
-                    <h4>📊 Session Info</h4>
-                    <p><strong>Start Time:</strong> <span id="startTime">Not started</span></p>
-                    <p><strong>Total Reps:</strong> <span id="totalReps">0</span></p>
-                    <p><strong>Current Parameters:</strong> <span id="currentParams">None</span></p>
-                    
-                    <h4>📈 Count History</h4>
-                    <div class="count-history" id="countHistory">
-                        <p>No counts recorded yet</p>
+                <div class="control-group">
+                    <h3>📹 视频录制</h3>
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        录制带有计数信息的处理后视频：
+                    </div>
+                    <button id="startRecordingBtn" onclick="startRecording()" disabled title="开始录制当前的视频处理画面">🔴 开始录制</button>
+                    <button id="stopRecordingBtn" onclick="stopRecording()" class="btn-stop" disabled title="停止录制并保存视频文件">⏹️ 停止录制</button>
+                    <button id="downloadRecordingBtn" onclick="downloadRecording()" class="btn-save" disabled title="下载最近录制的视频文件">💾 下载录制视频</button>
+                    <div id="recordingStatus" style="margin-top: 10px; padding: 8px; background: #f0f8ff; border-radius: 4px; font-size: 0.9em; text-align: center;">准备录制</div>
+                    <div style="font-size: 0.8em; color: #555; margin-top: 10px; padding: 8px; background: #f9f9f9; border-radius: 4px;">
+                        <strong>🎬 录制说明：</strong><br>
+                        • 录制的视频包含检测线、计数信息和检测框<br>
+                        • 视频格式：MP4，帧率：25fps<br>
+                        • 分辨率：与网页显示一致（最大640px宽度）<br>
+                        • 录制文件保存在recordings文件夹中
                     </div>
                 </div>
             </div>
@@ -1078,175 +597,87 @@
     </div>
 
     <script>
+        // 全局变量
         let isRunning = false;
         let updateInterval;
         let selectedCounter = '';
         let selectedCounterType = '';
-        let selectedCounterCategory = '';
-        let sliderUpdateTimeout = null;
-        let mediaRecorder = null;
-        let recordedChunks = [];
+        let sliderTimeout = null;
         let isRecording = false;
-        let recordingStream = null;
         
-        // Initialize page
+        // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
-            updateParameterValues();
+            updateParameterControls();
+            loadUploadedVideos();
         });
         
         function setupEventListeners() {
-            // Counter selection changes
+            // 计数器选择事件
             document.getElementById('humanCounterSelect').addEventListener('change', handleCounterSelection);
             document.getElementById('animalCounterSelect').addEventListener('change', handleCounterSelection);
             document.getElementById('objectCounterSelect').addEventListener('change', handleCounterSelection);
             
-            // Keyboard controls for center line adjustment
-            document.addEventListener('keydown', handleKeyboardControls);
+            // 键盘控制
+            document.addEventListener('keydown', handleKeyboard);
             
-            // Video source change
+            // 视频源切换
             document.getElementById('videoSource').addEventListener('change', function() {
                 const uploadGroup = document.getElementById('uploadVideoGroup');
                 const uploadedGroup = document.getElementById('uploadedVideoGroup');
-                const customGroup = document.getElementById('customVideoGroup');
                 
-                // Hide all groups first
+                // 隐藏所有组
                 uploadGroup.classList.add('hidden');
                 uploadedGroup.classList.add('hidden');
-                customGroup.classList.add('hidden');
                 
                 if (this.value === 'upload') {
                     uploadGroup.classList.remove('hidden');
                 } else if (this.value === 'uploaded') {
                     uploadedGroup.classList.remove('hidden');
                     loadUploadedVideos();
-                } else if (this.value === 'custom') {
-                    customGroup.classList.remove('hidden');
                 }
             });
             
-            // File upload setup
-            setupFileUpload();
+            // 文件上传
+            document.getElementById('videoFileInput').addEventListener('change', uploadVideo);
             
-            // Refresh videos button
-            document.getElementById('refreshVideosBtn').addEventListener('click', loadUploadedVideos);
-            
-            // Parameter range inputs
-            const rangeInputs = ['threshold', 'minVisibility', 'stableFrames', 'confidenceThreshold', 'validationThreshold'];
-            rangeInputs.forEach(id => {
-                const input = document.getElementById(id);
-                if (input) {
-                    const valueSpan = document.getElementById(id + 'Value');
-                    input.addEventListener('input', function() {
-                        valueSpan.textContent = this.value;
-                    });
-                }
-            });
-            
-            // Add real-time parameter adjustment with debouncing
-            const parameterSliders = [
-                { id: 'threshold', param: 'threshold', statusId: 'thresholdStatus' },
-                { id: 'minVisibility', param: 'min_visibility', statusId: 'visibilityStatus' },
-                { id: 'stableFrames', param: 'stable_frames', statusId: 'stableFramesStatus' },
-                { id: 'confidenceThreshold', param: 'confidence_threshold', statusId: 'confidenceStatus' },
-                { id: 'validationThreshold', param: 'validation_threshold', statusId: 'validationStatus' }
-            ];
-            
-            parameterSliders.forEach(slider => {
-                const element = document.getElementById(slider.id);
-                const valueElement = document.getElementById(slider.id + 'Value');
-                const statusElement = document.getElementById(slider.statusId);
-                
-                if (element && valueElement && statusElement) {
-                    element.addEventListener('input', function() {
-                        valueElement.textContent = this.value;
-                        statusElement.textContent = 'Adjusting...';
-                        statusElement.className = 'slider-status working';
-                        
-                        // Debounce the API call
-                        if (sliderUpdateTimeout) {
-                            clearTimeout(sliderUpdateTimeout);
-                        }
-                        
-                        sliderUpdateTimeout = setTimeout(() => {
-                            if (isRunning) {
-                                adjustParameter(slider.param, this.value, statusElement);
-                            } else {
-                                statusElement.textContent = 'Start counter to activate adjustment';
-                                statusElement.className = 'slider-status ready';
-                            }
-                        }, 300);
-                    });
-                }
-            });
-            
-            // Center line slider with debouncing
+            // 滑块事件
+            setupSliders();
+        }
+
+        function setupSliders() {
             const centerLineSlider = document.getElementById('centerLineSlider');
+            const sensitivitySlider = document.getElementById('sensitivitySlider');
+            
             if (centerLineSlider) {
                 centerLineSlider.addEventListener('input', function() {
                     document.getElementById('centerLineSliderValue').textContent = this.value;
-                    document.getElementById('centerLineStatus').textContent = 'Adjusting...';
-                    document.getElementById('centerLineStatus').className = 'slider-status working';
                     
-                    // Debounce the API call
-                    if (sliderUpdateTimeout) {
-                        clearTimeout(sliderUpdateTimeout);
-                    }
-                    
-                    sliderUpdateTimeout = setTimeout(() => {
+                    if (sliderTimeout) clearTimeout(sliderTimeout);
+                    sliderTimeout = setTimeout(() => {
                         if (isRunning && selectedCounterType === 'yolo') {
-                            adjustCenterLineFromSlider(this.value);
-                        } else if (selectedCounterType === 'yolo') {
-                            document.getElementById('centerLineStatus').textContent = 'Start counter to activate adjustment';
-                            document.getElementById('centerLineStatus').className = 'slider-status ready';
-                        } else {
-                            document.getElementById('centerLineStatus').textContent = 'Select a YOLO counter to use this control';
-                            document.getElementById('centerLineStatus').className = 'slider-status ready';
+                            adjustCenterLineAbsolute(parseFloat(this.value));
                         }
                     }, 300);
                 });
             }
             
-            // Sensitivity slider with debouncing
-            const sensitivitySlider = document.getElementById('sensitivitySlider');
             if (sensitivitySlider) {
                 sensitivitySlider.addEventListener('input', function() {
                     document.getElementById('sensitivitySliderValue').textContent = this.value;
-                    document.getElementById('sensitivityStatus').textContent = 'Adjusting...';
-                    document.getElementById('sensitivityStatus').className = 'slider-status working';
                     
-                    // Debounce the API call
-                    if (sliderUpdateTimeout) {
-                        clearTimeout(sliderUpdateTimeout);
-                    }
-                    
-                    sliderUpdateTimeout = setTimeout(() => {
+                    if (sliderTimeout) clearTimeout(sliderTimeout);
+                    sliderTimeout = setTimeout(() => {
                         if (isRunning && selectedCounterType === 'yolo') {
-                            adjustSensitivityFromSlider(this.value);
-                        } else if (selectedCounterType === 'yolo') {
-                            document.getElementById('sensitivityStatus').textContent = 'Start counter to activate adjustment';
-                            document.getElementById('sensitivityStatus').className = 'slider-status ready';
-                        } else {
-                            document.getElementById('sensitivityStatus').textContent = 'Select a YOLO counter to use this control';
-                            document.getElementById('sensitivityStatus').className = 'slider-status ready';
+                            adjustSensitivityAbsolute(parseFloat(this.value));
                         }
                     }, 300);
                 });
             }
-            
-            // Anti-cheat checkbox
-            document.getElementById('enableAntiCheat').addEventListener('change', function() {
-                const validationGroup = document.getElementById('validationThresholdGroup');
-                if (this.checked) {
-                    validationGroup.style.display = 'block';
-                } else {
-                    validationGroup.style.display = 'none';
-                }
-            });
         }
         
         function handleCounterSelection(event) {
-            // Clear other selections
+            // 清除其他选择
             const selects = ['humanCounterSelect', 'animalCounterSelect', 'objectCounterSelect'];
             selects.forEach(selectId => {
                 if (selectId !== event.target.id) {
@@ -1258,31 +689,8 @@
             if (option && option.value) {
                 selectedCounter = option.value;
                 selectedCounterType = option.dataset.type;
-                selectedCounterCategory = option.dataset.category;
                 
-                // Show/hide controls based on counter type
-                updateControlsVisibility();
-                
-                // Load counter parameters
-                loadCounterInfo(selectedCounter);
-                
-                // Scroll to parameters section smoothly
-                setTimeout(() => {
-                    document.getElementById('parametersGroup').scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' 
-                    });
-                }, 100);
-            } else {
-                selectedCounter = '';
-                selectedCounterType = '';
-                selectedCounterCategory = '';
-                updateControlsVisibility();
-            }
-        }
-        
-        function updateControlsVisibility() {
-            // Center line controls - only for YOLO counters
+                // 显示/隐藏中心线控制
             const centerLineGroup = document.getElementById('centerLineGroup');
             if (selectedCounterType === 'yolo') {
                 centerLineGroup.classList.remove('hidden');
@@ -1290,266 +698,20 @@
                 centerLineGroup.classList.add('hidden');
             }
             
-            // Parameter controls visibility
-            const confidenceGroup = document.getElementById('confidenceThresholdGroup');
-            const antiCheatGroup = document.getElementById('antiCheatGroup');
-            const validationGroup = document.getElementById('validationThresholdGroup');
-            
-            if (selectedCounterType === 'yolo') {
-                // Show YOLO-specific controls
-                confidenceGroup.style.display = 'block';
-                antiCheatGroup.style.display = 'none';
-                validationGroup.style.display = 'none';
-            } else if (selectedCounterType === 'mediapipe') {
-                // Show MediaPipe-specific controls
-                confidenceGroup.style.display = 'none';
-                antiCheatGroup.style.display = 'block';
-                validationGroup.style.display = document.getElementById('enableAntiCheat').checked ? 'block' : 'none';
+                // 加载计数器信息
+                loadCounterInfo(selectedCounter);
+                
+                // 更新显示
+                document.getElementById('counterName').textContent = selectedCounter;
             } else {
-                // Hide type-specific controls when no counter selected
-                confidenceGroup.style.display = 'none';
-                antiCheatGroup.style.display = 'none';
-                validationGroup.style.display = 'none';
+                selectedCounter = '';
+                selectedCounterType = '';
+                document.getElementById('centerLineGroup').classList.add('hidden');
+                document.getElementById('counterName').textContent = '未选择计数器';
             }
         }
-        
-        async function adjustParameter(paramName, value, statusElement) {
-            try {
-                statusElement.textContent = 'Applying...';
-                statusElement.className = 'slider-status working';
-                
-                const response = await fetch('/adjust_parameter', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        parameter: paramName,
-                        value: parseFloat(value)
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    statusElement.textContent = `Set to ${value}`;
-                    statusElement.className = 'slider-status active';
-                    showMessage(result.message, 'success');
-                } else {
-                    statusElement.textContent = 'Failed to adjust';
-                    statusElement.className = 'slider-status ready';
-                    showMessage(result.error, 'error');
-                }
-                
-            } catch (error) {
-                statusElement.textContent = 'Error occurred';
-                statusElement.className = 'slider-status ready';
-                showMessage(`Error adjusting ${paramName}: ${error.message}`, 'error');
-            }
-        }
-        
-        function handleKeyboardControls(event) {
-            // Only handle keys when a YOLO counter is running and has center line support
-            if (!isRunning || !selectedCounter || selectedCounterType !== 'yolo') {
-                return;
-            }
-            
-            // Check if center line controls are visible (means counter supports it)
-            const centerLineGroup = document.getElementById('centerLineGroup');
-            if (centerLineGroup.classList.contains('hidden')) {
-                return;
-            }
-            
-            // Prevent default behavior for our handled keys
-            const handledKeys = ['KeyW', 'KeyS', 'ArrowUp', 'ArrowDown', 'Equal', 'Minus', 'Digit0', 'Numpad0'];
-            if (handledKeys.includes(event.code)) {
-                event.preventDefault();
-            }
-            
-            // Handle keyboard inputs
-            switch(event.code) {
-                case 'KeyW':
-                case 'ArrowUp':
-                    adjustCenterLine(-0.05);
-                    showMessage('Center line moved UP (W key)', 'success');
-                    break;
-                    
-                case 'KeyS':
-                case 'ArrowDown':
-                    adjustCenterLine(0.05);
-                    showMessage('Center line moved DOWN (S key)', 'success');
-                    break;
-                    
-                case 'Equal': // + key (without shift)
-                case 'NumpadAdd':
-                    adjustSensitivity('decrease');
-                    showMessage('Sensitivity DECREASED (less sensitive)', 'success');
-                    break;
-                    
-                case 'Minus':
-                case 'NumpadSubtract':
-                    adjustSensitivity('increase');
-                    showMessage('Sensitivity INCREASED (more sensitive)', 'success');
-                    break;
-                    
-                case 'Digit0':
-                case 'Numpad0':
-                    resetCalibration();
-                    showMessage('Calibration RESET to auto (0 key)', 'success');
-                    break;
-            }
-        }
-        
-        function setupFileUpload() {
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('videoFileInput');
-            
-            // Click to upload
-            uploadArea.addEventListener('click', () => fileInput.click());
-            
-            // File selection
-            fileInput.addEventListener('change', handleFileSelect);
-            
-            // Drag and drop
-            uploadArea.addEventListener('dragover', handleDragOver);
-            uploadArea.addEventListener('dragleave', handleDragLeave);
-            uploadArea.addEventListener('drop', handleFileDrop);
-        }
-        
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.add('dragover');
-        }
-        
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.remove('dragover');
-        }
-        
-        function handleFileDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('uploadArea').classList.remove('dragover');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                uploadFile(files[0]);
-            }
-        }
-        
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                uploadFile(file);
-            }
-        }
-        
-        async function uploadFile(file) {
-            const progressDiv = document.getElementById('uploadProgress');
-            const progressFill = document.getElementById('progressFill');
-            const uploadStatus = document.getElementById('uploadStatus');
-            
-            // Show progress bar
-            progressDiv.classList.remove('hidden');
-            progressFill.style.width = '0%';
-            uploadStatus.textContent = 'Uploading...';
-            
-            const formData = new FormData();
-            formData.append('video_file', file);
-            
-            try {
-                const xhr = new XMLHttpRequest();
-                
-                // Track upload progress
-                xhr.upload.addEventListener('progress', (e) => {
-                    if (e.lengthComputable) {
-                        const percentComplete = (e.loaded / e.total) * 100;
-                        progressFill.style.width = percentComplete + '%';
-                        uploadStatus.textContent = `Uploading... ${Math.round(percentComplete)}%`;
-                    }
-                });
-                
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        const result = JSON.parse(xhr.responseText);
-                        if (result.success) {
-                            progressFill.style.width = '100%';
-                            uploadStatus.textContent = 'Upload complete!';
-                            showMessage(result.message, 'success');
-                            
-                            // Switch to uploaded videos and refresh list
-                            document.getElementById('videoSource').value = 'uploaded';
-                            document.getElementById('uploadVideoGroup').classList.add('hidden');
-                            document.getElementById('uploadedVideoGroup').classList.remove('hidden');
-                            loadUploadedVideos();
-                            
-                            // Hide progress after 2 seconds
-                            setTimeout(() => {
-                                progressDiv.classList.add('hidden');
-                            }, 2000);
-                        } else {
-                            throw new Error(result.error);
-                        }
-                    } else {
-                        throw new Error('Upload failed');
-                    }
-                };
-                
-                xhr.onerror = function() {
-                    throw new Error('Upload failed');
-                };
-                
-                xhr.open('POST', '/upload_video');
-                xhr.send(formData);
-                
-            } catch (error) {
-                progressDiv.classList.add('hidden');
-                showMessage('Upload failed: ' + error.message, 'error');
-            }
-        }
-        
-        async function loadUploadedVideos() {
-            try {
-                const response = await fetch('/list_uploaded_videos');
-                const data = await response.json();
-                
-                const select = document.getElementById('uploadedVideoSelect');
-                select.innerHTML = '';
-                
-                if (data.videos && data.videos.length > 0) {
-                    data.videos.forEach(video => {
-                        const option = document.createElement('option');
-                        option.value = video.filepath;
-                        option.textContent = `${video.filename} (${video.size_mb} MB)`;
-                        select.appendChild(option);
-                    });
-                } else {
-                    const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'No uploaded videos found';
-                    select.appendChild(option);
-                }
-                
-            } catch (error) {
-                showMessage('Error loading videos: ' + error.message, 'error');
-            }
-        }
-        
-        function updateParameterValues() {
-            const rangeInputs = ['threshold', 'minVisibility', 'stableFrames', 'confidenceThreshold', 'validationThreshold'];
-            rangeInputs.forEach(id => {
-                const input = document.getElementById(id);
-                const valueSpan = document.getElementById(id + 'Value');
-                valueSpan.textContent = input.value;
-            });
-        }
-        
-        async function loadCounterInfo() {
-            const counterName = selectedCounter;
-            if (!counterName) return;
-            
+
+        async function loadCounterInfo(counterName) {
             try {
                 const response = await fetch(`/get_counter_info/${counterName}`);
                 const info = await response.json();
@@ -1558,100 +720,232 @@
                     showMessage(info.error, 'error');
                     return;
                 }
-                
-                // Update parameter inputs with counter defaults
-                if (info.parameters.threshold) {
-                    document.getElementById('threshold').value = info.parameters.threshold.default;
-                }
-                if (info.parameters.min_visibility) {
-                    document.getElementById('minVisibility').value = info.parameters.min_visibility.default;
-                }
-                if (info.parameters.stable_frames) {
-                    document.getElementById('stableFrames').value = info.parameters.stable_frames.default;
-                }
-                if (info.parameters.confidence_threshold) {
-                    document.getElementById('confidenceThreshold').value = info.parameters.confidence_threshold.default;
-                }
-                if (info.parameters.enable_anti_cheat) {
-                    document.getElementById('enableAntiCheat').checked = info.parameters.enable_anti_cheat.default;
-                }
-                if (info.parameters.validation_threshold) {
-                    document.getElementById('validationThreshold').value = info.parameters.validation_threshold.default;
-                }
-                
-                updateParameterValues();
-                
-                // Update controls visibility based on loaded info
-                updateControlsVisibility();
-                
-                // Show/hide validation threshold based on anti-cheat
-                const validationGroup = document.getElementById('validationThresholdGroup');
-                if (info.parameters.enable_anti_cheat) {
-                    validationGroup.style.display = info.parameters.enable_anti_cheat.default ? 'block' : 'none';
-                }
-                
+
+                updateParameterControls(info.parameters);
             } catch (error) {
-                showMessage('Error loading counter info: ' + error.message, 'error');
+                showMessage(`加载计数器信息失败: ${error.message}`, 'error');
             }
         }
-        
+
+        function updateParameterControls(parameters = {}) {
+            const container = document.getElementById('parameterControls');
+            container.innerHTML = '';
+
+            // English(Chinese) parameter name mapping with priority order
+            const parameterNames = {
+                'threshold': 'Threshold (检测阈值)',
+                'confidence_threshold': 'Confidence Threshold (置信度阈值)',
+                'validation_threshold': 'Validation Threshold (验证阈值)',
+                'stable_frames': 'Stable Frames (稳定帧数)',
+                'calibration_frames': 'Calibration Frames (校准帧数)',
+                'min_visibility': 'Min Visibility (最小可见度)',
+                'enable_anti_cheat': 'Anti-Cheat (防作弊检测)'
+            };
+
+            // Parameter descriptions in Chinese
+            const parameterDescriptions = {
+                'threshold': '控制动作检测的敏感度，值越小越容易触发计数',
+                'confidence_threshold': 'YOLO目标检测的最小置信度要求 (0.0-1.0)',
+                'validation_threshold': '动作验证的严格程度，值越高要求越严格',
+                'stable_frames': '确认动作需要的连续检测帧数，增加可减少误判',
+                'calibration_frames': '自动校准阶段需要采集的帧数量',
+                'min_visibility': '人体关键点的最小可见度要求 (0.0-1.0)',
+                'enable_anti_cheat': '启用额外的动作验证机制，防止无效计数'
+            };
+
+            // Define parameter priority order (most important first)
+            const parameterOrder = [
+                'threshold',
+                'confidence_threshold', 
+                'validation_threshold',
+                'stable_frames',
+                'calibration_frames',
+                'min_visibility',
+                'enable_anti_cheat'
+            ];
+
+            // Sort parameters by priority, then add any remaining ones
+            const sortedParams = [];
+            
+            // Add parameters in priority order
+            parameterOrder.forEach(param => {
+                if (parameters[param]) {
+                    sortedParams.push([param, parameters[param]]);
+                }
+            });
+            
+            // Add any remaining parameters not in the priority list
+            Object.entries(parameters).forEach(([param, config]) => {
+                if (!parameterOrder.includes(param)) {
+                    sortedParams.push([param, config]);
+                }
+            });
+
+            sortedParams.forEach(([param, config]) => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                
+                const displayName = parameterNames[param] || `${param} (${param})`;
+                const description = parameterDescriptions[param] || '';
+                
+                if (config.type === 'bool') {
+                    div.innerHTML = `
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="${param}" ${config.default ? 'checked' : ''}>
+                            <span>${displayName}</span>
+                        </label>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 4px; margin-left: 24px;">
+                            ${description}
+                        </div>
+                    `;
+                } else {
+                    const maxValue = config.type === 'int' ? '100' : '10';
+                    const stepValue = config.type === 'int' ? '1' : '0.01';
+                    
+                    div.innerHTML = `
+                        <label>${displayName}:</label>
+                        <div style="font-size: 0.8em; color: #666; margin: 4px 0;">
+                            ${description}
+                        </div>
+                        <div class="parameter-input">
+                            <input type="range" id="${param}" min="0" max="${maxValue}" 
+                                   step="${stepValue}" value="${config.default}">
+                            <span class="range-value" id="${param}Value">${config.default}</span>
+                        </div>
+                    `;
+                }
+                
+                container.appendChild(div);
+            });
+            
+            // 添加参数滑块事件
+            container.querySelectorAll('input[type="range"]').forEach(slider => {
+                const valueSpan = document.getElementById(slider.id + 'Value');
+                slider.addEventListener('input', function() {
+                    if (valueSpan) valueSpan.textContent = this.value;
+                    
+                    // 实时参数调整
+                    if (isRunning) {
+                        if (sliderTimeout) clearTimeout(sliderTimeout);
+                        sliderTimeout = setTimeout(() => {
+                            updateParameterRealtime(this.id, this.value);
+                        }, 300);
+                    }
+                });
+            });
+            
+            // 添加复选框事件
+            container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (isRunning) {
+                        updateParameterRealtime(this.id, this.checked);
+                    }
+                });
+            });
+        }
+
         async function startCounter() {
             if (!selectedCounter) {
-                showMessage('Please select a counter first', 'error');
+                showMessage('请先选择一个计数器', 'error');
                 return;
             }
-            
-            const videoSource = document.getElementById('videoSource').value;
-            let finalVideoSource = videoSource;
-            
-            if (videoSource === 'uploaded') {
-                finalVideoSource = document.getElementById('uploadedVideoSelect').value;
-                if (!finalVideoSource) {
-                    showMessage('Please select an uploaded video', 'error');
-                    return;
-                }
-            } else if (videoSource === 'custom') {
-                finalVideoSource = document.getElementById('customVideoPath').value;
-                if (!finalVideoSource) {
-                    showMessage('Please enter a video file path', 'error');
-                    return;
-                }
-            } else if (videoSource === 'upload') {
-                showMessage('Please upload a video file first', 'error');
-                return;
-            }
-            
-            // Collect parameters
-            const parameters = {
-                threshold: parseFloat(document.getElementById('threshold').value),
-                min_visibility: parseFloat(document.getElementById('minVisibility').value),
-                stable_frames: parseInt(document.getElementById('stableFrames').value),
-                enable_anti_cheat: document.getElementById('enableAntiCheat').checked,
-                validation_threshold: parseFloat(document.getElementById('validationThreshold').value)
-            };
-            
+
             try {
+                const videoSource = getVideoSource();
+                const parameters = getParameters();
+
                 const response = await fetch('/start_counter', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         counter: selectedCounter,
-                        video_source: finalVideoSource,
+                        video_source: videoSource,
                         parameters: parameters
                     })
                 });
+
+                const result = await response.json();
                 
+                        if (result.success) {
+                    isRunning = true;
+                    updateButtonStates();
+                    startVideoFeed();
+                    startStatusUpdates();
+                            showMessage(result.message, 'success');
+                        } else {
+                    showMessage(result.error, 'error');
+                }
+            } catch (error) {
+                showMessage(`启动失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function stopCounter() {
+            try {
+                const response = await fetch('/stop_counter', { method: 'POST' });
+                const result = await response.json();
+                
+                isRunning = false;
+                updateButtonStates();
+                stopVideoFeed();
+                stopStatusUpdates();
+                showMessage('计数器已停止', 'success');
+            } catch (error) {
+                showMessage(`停止失败: ${error.message}`, 'error');
+            }
+        }
+
+        async function saveSession() {
+            try {
+                const response = await fetch('/save_session', { method: 'POST' });
                 const result = await response.json();
                 
                 if (result.success) {
-                    isRunning = true;
-                    document.getElementById('startBtn').disabled = true;
-                    document.getElementById('stopBtn').disabled = false;
+                    showMessage(`会话已保存: ${result.filename}`, 'success');
+                } else {
+                    showMessage(result.error, 'error');
+                }
+            } catch (error) {
+                showMessage(`保存失败: ${error.message}`, 'error');
+            }
+        }
+
+        function getVideoSource() {
+            const select = document.getElementById('videoSource');
+            if (select.value === 'uploaded') {
+                const uploadedSelect = document.getElementById('uploadedVideoSelect');
+                return uploadedSelect.value || '0';
+            }
+            return select.value;
+        }
+
+        function getParameters() {
+            const parameters = {};
+            const inputs = document.querySelectorAll('#parameterControls input');
+            
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    parameters[input.id] = input.checked;
+                } else if (input.type === 'range') {
+                    parameters[input.id] = parseFloat(input.value);
+                }
+            });
+            
+            return parameters;
+        }
+
+        function updateButtonStates() {
+            document.getElementById('startBtn').disabled = isRunning;
+            document.getElementById('stopBtn').disabled = !isRunning;
                     document.getElementById('saveBtn').disabled = false;
                     
-                    // Start video feed with smooth transition
+            // 录制按钮状态
+            document.getElementById('startRecordingBtn').disabled = !isRunning || isRecording;
+            document.getElementById('stopRecordingBtn').disabled = !isRecording;
+            // 下载按钮在录制停止后手动启用，这里不改变状态
+        }
+
+        function startVideoFeed() {
                     const videoFeed = document.getElementById('videoFeed');
                     const placeholder = document.getElementById('videoPlaceholder');
                     
@@ -1660,375 +954,330 @@
                     videoFeed.classList.add('video-visible');
                     placeholder.classList.remove('video-visible');
                     placeholder.classList.add('video-hidden');
-                    
-                    // Start updating session data
-                    updateInterval = setInterval(updateSessionData, 1000);
-                    
-                    showMessage(result.message, 'success');
-                } else {
-                    showMessage(result.error, 'error');
-                }
-                
-            } catch (error) {
-                showMessage('Error starting counter: ' + error.message, 'error');
-            }
         }
-        
-        async function stopCounter() {
-            try {
-                const response = await fetch('/stop_counter', {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    isRunning = false;
-                    document.getElementById('startBtn').disabled = false;
-                    document.getElementById('stopBtn').disabled = true;
-                    
-                    // Stop video feed
-                    document.getElementById('videoFeed').src = '';
-                    document.getElementById('videoFeed').classList.add('video-hidden');
-                    document.getElementById('videoPlaceholder').classList.remove('video-hidden');
-                    
-                    // Stop updating session data
+
+        function stopVideoFeed() {
+            const videoFeed = document.getElementById('videoFeed');
+            const placeholder = document.getElementById('videoPlaceholder');
+            
+            videoFeed.src = '';
+            videoFeed.classList.add('video-hidden');
+            placeholder.classList.remove('video-hidden');
+            placeholder.classList.add('video-visible');
+        }
+
+        function startStatusUpdates() {
+            updateInterval = setInterval(updateStatus, 1000);
+        }
+
+        function stopStatusUpdates() {
                     if (updateInterval) {
                         clearInterval(updateInterval);
-                    }
-                    
-                    showMessage('Counter stopped', 'success');
-                } else {
-                    showMessage('Error stopping counter', 'error');
-                }
-                
-            } catch (error) {
-                showMessage('Error stopping counter: ' + error.message, 'error');
+                updateInterval = null;
             }
         }
-        
-        async function saveSession() {
-            try {
-                // Show loading state
-                const saveBtn = document.getElementById('saveBtn');
-                const originalText = saveBtn.textContent;
-                saveBtn.textContent = '💾 Saving...';
-                saveBtn.disabled = true;
-                
-                const response = await fetch('/save_session', {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage(`✅ Session saved successfully: ${result.filename}`, 'success');
-                    saveBtn.textContent = '✅ Saved!';
-                    
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        saveBtn.textContent = originalText;
-                        saveBtn.disabled = false;
-                    }, 2000);
-                } else {
-                    showMessage(`❌ Save failed: ${result.error}`, 'error');
-                    saveBtn.textContent = originalText;
-                    saveBtn.disabled = false;
-                }
-                
-            } catch (error) {
-                showMessage(`❌ Save error: ${error.message}`, 'error');
-                const saveBtn = document.getElementById('saveBtn');
-                saveBtn.textContent = '💾 Save Session';
-                saveBtn.disabled = false;
-            }
-        }
-        
-        async function updateSessionData() {
-            if (!isRunning) return;
-            
+
+        async function updateStatus() {
             try {
                 const response = await fetch('/get_session_data');
                 const data = await response.json();
                 
-                // Update display
-                document.getElementById('currentCount').textContent = `Count: ${data.current_count}`;
-                document.getElementById('counterName').textContent = data.counter_name || 'No counter selected';
-                document.getElementById('startTime').textContent = data.start_time ? 
-                    new Date(data.start_time).toLocaleString() : 'Not started';
-                document.getElementById('totalReps').textContent = data.counts.length;
-                document.getElementById('currentParams').textContent = Object.keys(data.parameters).length > 0 ? 
-                    JSON.stringify(data.parameters) : 'Default parameters';
+                document.getElementById('currentCount').textContent = `计数: ${data.current_count || 0}`;
                 
-                // Update count history with better formatting
-                const historyDiv = document.getElementById('countHistory');
-                if (data.counts.length > 0) {
-                    const recentCounts = data.counts.slice(-10); // Show last 10 counts
-                    historyDiv.innerHTML = recentCounts.map((count, index) => {
-                        const time = new Date(count.timestamp).toLocaleTimeString();
-                        const confidence = count.confidence !== undefined ? count.confidence.toFixed(2) : 
-                                         (count.validation_score ? count.validation_score.toFixed(2) : 'N/A');
-                        return `<div class="count-entry">
-                            <span class="count-number">#${count.count}</span>
-                            <span class="count-time">${time}</span>
-                            <span class="count-confidence">Score: ${confidence}</span>
-                        </div>`;
-                    }).join('');
-                } else {
-                    historyDiv.innerHTML = '<p class="no-counts">No counts recorded yet</p>';
+                // Update center line slider if YOLO counter is running
+                if (isRunning && selectedCounterType === 'yolo') {
+                    await updateCenterLineSliderFromCounter();
                 }
-                
             } catch (error) {
-                // Silently handle session data errors
+                console.error('状态更新失败:', error);
+            }
+        }
+
+        // 更新中心线滑块值以匹配计数器的实际值
+        async function updateCenterLineSliderFromCounter() {
+            try {
+                const response = await fetch('/get_center_line_position');
+                const data = await response.json();
+                
+                if (data.success && data.calibrated) {
+                    const centerLineSlider = document.getElementById('centerLineSlider');
+                    const centerLineValue = document.getElementById('centerLineSliderValue');
+                    
+                    if (centerLineSlider && centerLineValue) {
+                        // Only set slider value if it's not already initialized or if the value has changed significantly
+                        const currentSliderValue = parseInt(centerLineSlider.value);
+                        const actualPosition = Math.round(data.position);
+                        
+                        if (!centerLineSlider.dataset.initialized || Math.abs(currentSliderValue - actualPosition) > 50) {
+                            // Ensure the actual position is within slider range
+                            const clampedPosition = Math.max(50, Math.min(2000, actualPosition));
+                            centerLineSlider.value = clampedPosition;
+                            centerLineValue.textContent = clampedPosition;
+                            centerLineSlider.dataset.initialized = 'true';
+                            console.log(`🎚️ 滑块初始化为中心线位置: ${clampedPosition} (实际: ${actualPosition})`);
+                            
+                            // Warn if position is outside slider range
+                            if (actualPosition > 2000) {
+                                console.warn(`⚠️ 中心线位置 ${actualPosition} 超出滑块最大值 2000，请使用按钮调整`);
+                            } else if (actualPosition < 50) {
+                                console.warn(`⚠️ 中心线位置 ${actualPosition} 低于滑块最小值 50，请使用按钮调整`);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                // 静默失败，不影响主要功能
+            }
+        }
+
+        // 调整函数 - 简化版本
+        async function adjustCenterLine(adjustment) {
+            await makeAdjustment('/adjust_center_line', { adjustment });
+        }
+
+        async function adjustCenterLineAbsolute(position) {
+            await makeAdjustment('/adjust_center_line_absolute', { position });
+        }
+
+        async function adjustSensitivityAbsolute(value) {
+            await makeAdjustment('/adjust_sensitivity_absolute', { value });
+        }
+
+        async function resetCalibration() {
+            const result = await makeAdjustment('/reset_calibration', {});
+            
+            // Reset slider initialization flag so it can be re-initialized after calibration
+            const centerLineSlider = document.getElementById('centerLineSlider');
+            if (centerLineSlider) {
+                centerLineSlider.dataset.initialized = 'false';
+                // Reset slider to middle of range for better coverage
+                centerLineSlider.value = 1000;  // Middle of 50-2000 range
+                document.getElementById('centerLineSliderValue').textContent = '1000';
+            }
+            
+            // Reset sensitivity slider to default
+            const sensitivitySlider = document.getElementById('sensitivitySlider');
+            if (sensitivitySlider) {
+                sensitivitySlider.value = 1.0;
+                document.getElementById('sensitivitySliderValue').textContent = '1.0';
+            }
+            
+            // Reset count display
+            document.getElementById('currentCount').textContent = '计数: 0';
+            
+            return result;
+        }
+
+        async function makeAdjustment(endpoint, data) {
+            if (!isRunning) {
+                showMessage('请先启动计数器', 'error');
                 return;
             }
-        }
-        
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('statusMessage');
-            messageDiv.textContent = message;
-            messageDiv.className = `status-message status-${type}`;
-            messageDiv.classList.remove('hidden');
-            
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                messageDiv.classList.add('hidden');
-            }, 5000);
-        }
-        
-        async function adjustCenterLine(adjustment) {
+
+            if (selectedCounterType !== 'yolo' && endpoint.includes('center_line')) {
+                showMessage('只有YOLO计数器支持中心线调整', 'error');
+                return;
+            }
+
             try {
-                const response = await fetch('/adjust_center_line', {
+                console.log(`发送调整请求: ${endpoint}`, data);
+                const response = await fetch(endpoint, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        adjustment: adjustment
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
                 
                 const result = await response.json();
+                console.log('调整响应:', result);
                 
                 if (result.success) {
-                    // Update both the slider and the display value
-                    const sliderElement = document.getElementById('centerLineSlider');
-                    const valueElement = document.getElementById('centerLineSliderValue');
-                    
-                    sliderElement.value = result.new_center_line;
-                    valueElement.textContent = result.new_center_line.toFixed(1);
-                    
                     showMessage(result.message, 'success');
+                    
+                    // 更新滑块显示
+                    if (result.new_center_line && document.getElementById('centerLineSlider')) {
+                        document.getElementById('centerLineSlider').value = result.new_center_line;
+                        document.getElementById('centerLineSliderValue').textContent = result.new_center_line;
+                    }
                 } else {
-                    showMessage(result.error, 'error');
+                    showMessage(result.error || '调整失败', 'error');
                 }
-                
             } catch (error) {
-                showMessage('Error adjusting center line: ' + error.message, 'error');
+                console.error('调整失败:', error);
+                showMessage(`调整失败: ${error.message}`, 'error');
             }
         }
-        
-        async function resetCalibration() {
-            try {
-                const response = await fetch('/reset_calibration', {
-                    method: 'POST'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Reset slider to middle position
-                    const sliderElement = document.getElementById('centerLineSlider');
-                    const valueElement = document.getElementById('centerLineSliderValue');
-                    
-                    sliderElement.value = 500;
-                    valueElement.textContent = 'Auto';
-                    
-                    showMessage(result.message, 'success');
-                } else {
-                    showMessage(result.error, 'error');
-                }
-                
-            } catch (error) {
-                showMessage('Error resetting calibration: ' + error.message, 'error');
+
+        // 键盘控制
+        function handleKeyboard(event) {
+            if (!isRunning || selectedCounterType !== 'yolo') return;
+
+            const keyActions = {
+                'KeyW': () => adjustCenterLine(-0.05),
+                'ArrowUp': () => adjustCenterLine(-0.05),
+                'KeyS': () => adjustCenterLine(0.05),
+                'ArrowDown': () => adjustCenterLine(0.05),
+                'Equal': () => adjustSensitivity('decrease'),
+                'Minus': () => adjustSensitivity('increase'),
+                'Digit0': () => resetCalibration()
+            };
+
+            if (keyActions[event.code]) {
+                event.preventDefault();
+                keyActions[event.code]();
+                console.log(`键盘快捷键: ${event.code}`);
             }
         }
         
         async function adjustSensitivity(direction) {
+            await makeAdjustment('/adjust_sensitivity', { direction });
+        }
+
+        // 实时参数更新
+        async function updateParameterRealtime(paramName, paramValue) {
             try {
-                const response = await fetch('/adjust_sensitivity', {
+                console.log(`实时更新参数: ${paramName} = ${paramValue}`);
+                const response = await fetch('/update_parameter', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        direction: direction
+                        parameter: paramName,
+                        value: paramValue
                     })
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
-                    showMessage(result.message, 'success');
+                    console.log(`参数更新成功: ${result.message}`);
+                    // 可选：显示简短的成功消息
+                    // showMessage(result.message, 'success');
                 } else {
+                    console.error('参数更新失败:', result.error);
                     showMessage(result.error, 'error');
                 }
-                
             } catch (error) {
-                showMessage('Error adjusting sensitivity: ' + error.message, 'error');
+                console.error('参数更新请求失败:', error);
+                showMessage(`参数更新失败: ${error.message}`, 'error');
             }
         }
-        
-        function adjustCenterLineFromSlider(sliderValue) {
-            const newValue = parseFloat(sliderValue);
+
+        // 文件上传
+        async function uploadVideo() {
+            const fileInput = document.getElementById('videoFileInput');
+            const file = fileInput.files[0];
             
-            // For sliders, use absolute positioning instead of relative adjustments
-            adjustCenterLineAbsolute(newValue);
-        }
-        
-        function adjustSensitivityFromSlider(sliderValue) {
-            adjustSensitivityAbsolute(parseFloat(sliderValue));
-        }
-        
-        function adjustCenterLineQuick(pixels) {
-            // Update slider to reflect change
-            const slider = document.getElementById('centerLineSlider');
-            const currentValue = parseFloat(slider.value);
-            const newValue = currentValue + pixels;
-            const clampedValue = Math.max(50, Math.min(1000, newValue)); // Clamp to range
-            
-            slider.value = clampedValue;
-            document.getElementById('centerLineSliderValue').textContent = clampedValue;
-            
-            // Use the absolute positioning method
-            adjustCenterLineAbsolute(clampedValue);
-        }
-        
-        async function adjustCenterLineAbsolute(pixelValue) {
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('video_file', file);
+
             try {
-                document.getElementById('centerLineStatus').textContent = 'Applying...';
-                document.getElementById('centerLineStatus').className = 'slider-status working';
-                
-                const response = await fetch('/adjust_center_line_absolute', {
+                showMessage('上传中...', 'success');
+                const response = await fetch('/upload_video', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        position: pixelValue
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    document.getElementById('centerLineStatus').textContent = `Set to ${pixelValue}px`;
-                    document.getElementById('centerLineStatus').className = 'slider-status active';
-                    showMessage(result.message, 'success');
-                } else {
-                    document.getElementById('centerLineStatus').textContent = 'Failed to adjust';
-                    document.getElementById('centerLineStatus').className = 'slider-status ready';
-                    showMessage(result.error, 'error');
-                }
-                
-            } catch (error) {
-                document.getElementById('centerLineStatus').textContent = 'Error occurred';
-                document.getElementById('centerLineStatus').className = 'slider-status ready';
-                showMessage('Error adjusting center line: ' + error.message, 'error');
-            }
-        }
-        
-        async function adjustSensitivityAbsolute(value) {
-            try {
-                const response = await fetch('/adjust_sensitivity_absolute', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        value: value
-                    })
+                    body: formData
                 });
                 
                 const result = await response.json();
                 
                 if (result.success) {
                     showMessage(result.message, 'success');
+                    // 自动切换到已上传视频并刷新列表
+                    document.getElementById('videoSource').value = 'uploaded';
+                    document.getElementById('uploadVideoGroup').classList.add('hidden');
+                    document.getElementById('uploadedVideoGroup').classList.remove('hidden');
+                    await loadUploadedVideos();
+                    // 自动选择刚上传的视频
+                    document.getElementById('uploadedVideoSelect').value = result.filepath;
                 } else {
                     showMessage(result.error, 'error');
                 }
-                
             } catch (error) {
-                showMessage('Error adjusting sensitivity: ' + error.message, 'error');
+                showMessage(`上传失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 加载已上传视频列表
+        async function loadUploadedVideos() {
+            try {
+                const response = await fetch('/list_uploaded_videos');
+                const data = await response.json();
+                
+                const select = document.getElementById('uploadedVideoSelect');
+                select.innerHTML = '<option value="">-- 选择已上传视频 --</option>';
+                
+                if (data.videos && data.videos.length > 0) {
+                    data.videos.forEach(video => {
+                        const option = document.createElement('option');
+                        option.value = video.filepath;
+                        option.textContent = `${video.filename} (${video.size_mb}MB)`;
+                        select.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = '没有已上传的视频';
+                    select.appendChild(option);
+                }
+            } catch (error) {
+                console.error('加载视频列表失败:', error);
+                showMessage('加载视频列表失败', 'error');
             }
         }
         
+        // 录制功能
         async function startRecording() {
-            try {
                 if (!isRunning) {
-                    showMessage('⚠️ Please start a counter first before recording', 'error');
+                showMessage('请先启动计数器', 'error');
                     return;
                 }
                 
-                // Update UI
-                document.getElementById('startRecordingBtn').disabled = true;
-                document.getElementById('stopRecordingBtn').disabled = false;
-                document.getElementById('recordingStatus').textContent = 'Starting recording...';
-                document.getElementById('recordingStatus').className = 'recording-status recording';
-                
-                // Start backend recording
-                const response = await fetch('/start_recording', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
+            try {
+                const response = await fetch('/start_recording', { method: 'POST' });
                 const result = await response.json();
                 
                 if (result.success) {
                     isRecording = true;
-                    document.getElementById('recordingStatus').textContent = '🔴 Recording...';
-                    document.getElementById('recordingInfo').textContent = `Started: ${new Date().toLocaleTimeString()}`;
-                    showMessage('📹 Recording started', 'success');
+                    updateButtonStates();
+                    updateRecordingStatus('🔴 录制中...', 'recording');
+                    showMessage('录制已开始', 'success');
                 } else {
-                    throw new Error(result.error);
+                    showMessage(result.error, 'error');
                 }
-                
             } catch (error) {
-                document.getElementById('startRecordingBtn').disabled = false;
-                document.getElementById('stopRecordingBtn').disabled = true;
-                document.getElementById('recordingStatus').textContent = 'Failed to start recording';
-                document.getElementById('recordingStatus').className = 'recording-status ready';
-                showMessage(`❌ Recording failed: ${error.message}`, 'error');
+                showMessage(`录制启动失败: ${error.message}`, 'error');
             }
         }
         
         async function stopRecording() {
             try {
-                document.getElementById('stopRecordingBtn').disabled = true;
-                document.getElementById('recordingStatus').textContent = 'Stopping recording...';
-                
-                const response = await fetch('/stop_recording', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
+                const response = await fetch('/stop_recording', { method: 'POST' });
                 const result = await response.json();
                 
                 if (result.success) {
                     isRecording = false;
-                    document.getElementById('startRecordingBtn').disabled = false;
-                    document.getElementById('downloadRecordingBtn').disabled = false;
-                    document.getElementById('recordingStatus').textContent = '✅ Recording complete';
-                    document.getElementById('recordingStatus').className = 'recording-status ready';
-                    document.getElementById('recordingInfo').textContent = `Saved: ${result.filename} (${result.duration || 'unknown'} seconds)`;
-                    showMessage(`✅ Recording saved: ${result.filename}`, 'success');
+                    updateButtonStates();
+                    
+                    // Show detailed recording information
+                    const fileInfo = result.file_size_mb > 0 
+                        ? `✅ 录制完成: ${result.filename} (${result.file_size_mb}MB, ${result.duration}s)`
+                        : `⚠️ 录制完成但文件为空: ${result.filename} (0MB)`;
+                    
+                    updateRecordingStatus(fileInfo, result.file_size_mb > 0 ? 'completed' : 'warning');
+                    
+                    // Only enable download if file has content
+                    document.getElementById('downloadRecordingBtn').disabled = result.file_size_mb <= 0;
+                    
+                    const message = result.file_size_mb > 0 
+                        ? `录制已停止: ${result.filename} (${result.file_size_mb}MB)`
+                        : `录制停止，但文件为空。请检查录制设置和编解码器支持。`;
+                    
+                    showMessage(message, result.file_size_mb > 0 ? 'success' : 'error');
                 } else {
-                    throw new Error(result.error);
+                    showMessage(result.error, 'error');
                 }
-                
             } catch (error) {
-                document.getElementById('stopRecordingBtn').disabled = false;
-                showMessage(`❌ Stop recording failed: ${error.message}`, 'error');
+                showMessage(`录制停止失败: ${error.message}`, 'error');
             }
         }
         
@@ -2040,25 +1289,55 @@
                     const blob = await response.blob();
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    const filename = response.headers.get('content-disposition')?.split('filename=')[1] || 'recording.mp4';
+                    const filename = response.headers.get('content-disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'recording.mp4';
                     
                     a.style.display = 'none';
                     a.href = url;
-                    a.download = filename.replace(/"/g, '');
+                    a.download = filename;
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
                     document.body.removeChild(a);
                     
-                    showMessage('💾 Recording downloaded successfully!', 'success');
+                    showMessage('录制视频下载成功!', 'success');
                 } else {
                     const error = await response.json();
-                    throw new Error(error.error || 'Download failed');
+                    showMessage(error.error || '下载失败', 'error');
                 }
-                
             } catch (error) {
-                showMessage(`❌ Download failed: ${error.message}`, 'error');
+                showMessage(`下载失败: ${error.message}`, 'error');
             }
+        }
+
+        function updateRecordingStatus(message, type) {
+            const statusDiv = document.getElementById('recordingStatus');
+            statusDiv.textContent = message;
+            
+            if (type === 'recording') {
+                statusDiv.style.background = '#ffebee';
+                statusDiv.style.color = '#c62828';
+            } else if (type === 'completed') {
+                statusDiv.style.background = '#e8f5e8';
+                statusDiv.style.color = '#2e7d32';
+            } else if (type === 'warning') {
+                statusDiv.style.background = '#fff3e0';
+                statusDiv.style.color = '#ef6c00';
+            } else {
+                statusDiv.style.background = '#f0f8ff';
+                statusDiv.style.color = '#1976d2';
+            }
+        }
+
+        // 消息显示
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('statusMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `status-message status-${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 5000);
         }
     </script>
 </body>

@@ -352,21 +352,29 @@ class SportsBallCounter:
         print(f"   Bounce height: {self.start_position - self.up_threshold:.1f}px")
     
     def reset_to_auto_calibration(self):
-        """Reset to original auto-calibrated values."""
+        """Reset to original auto-calibrated values and restart counting."""
         if not self.calibrated:
             print("⚠️  No calibration data available to reset to")
             return
         
+        # Reset counter state to restart counting
+        self.count = 0
+        self.state = "start"
+        self.stable_count = 0
+        
         # Reset sensitivity multiplier
         self.sensitivity_multiplier = 1.0
         
-        # Recalculate original thresholds
+        # Don't reset the actual calibrated position - just recalculate thresholds
+        # This preserves the original ground reference but resets sensitivity
         self._recalculate_thresholds()
         
         print(f"🔄 Reset to auto-calibrated values:")
         print(f"   Ground position: {self.start_position:.1f}")
         print(f"   Up threshold: {self.up_threshold:.1f}")
         print(f"   Down threshold: {self.down_threshold:.1f}")
+        print(f"   Count reset to: {self.count}")
+        print(f"   State reset to: {self.state}")
     
     def reset(self):
         """Reset the counter."""

@@ -434,6 +434,12 @@ class CatCounter:
             up_y = int(self.up_threshold * scale_y) if self.up_threshold is not None else center_y - 50
             down_y = int(self.down_threshold * scale_y) if self.down_threshold is not None else center_y + 50
             
+            # Debug logging for line positions
+            if hasattr(self, '_last_center_ref') and self._last_center_ref != center_ref:
+                print(f"🎨 Drawing lines with NEW center_reference: {center_ref:.1f} (was {self._last_center_ref:.1f})")
+                print(f"   Scaled center_y: {center_y}, up_y: {up_y}, down_y: {down_y}")
+            self._last_center_ref = center_ref
+            
             # Ensure lines are within frame bounds
             center_y = max(5, min(display_height - 5, center_y))
             up_y = max(5, min(display_height - 5, up_y))

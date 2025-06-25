@@ -1,247 +1,247 @@
-# 🎯 Unified Multi-Counter System
+# 🎯 统一多计数器系统
 
-A comprehensive real-time counting system that supports multiple detection technologies and counter types.
+一个支持多种检测技术和计数器类型的综合实时计数系统。
 
-## 🌟 Features
+## 🌟 功能
 
-### 🏃‍♀️ Human Action Counters (MediaPipe)
-- **Exercise counting**: Push-ups, squats, jumping jacks, etc.
-- **Real-time pose detection** using MediaPipe
-- **Anti-cheat validation** for accurate counting
-- **Customizable parameters** for different exercises
+### 🏃‍♀️ 人体动作计数器 (MediaPipe)
+- **锻炼计数**：俯卧撑、深蹲、开合跳等。
+- **实时姿态检测** 使用 MediaPipe
+- **反作弊验证** 确保计数准确
+- **可定制参数** 适用于不同的锻炼
 
-### 🐾 Animal Counters (YOLO)
-- **Cat and dog movement detection**
-- **Adaptive calibration** based on body size
-- **Interactive keyboard controls** for threshold adjustment
-- **Jump and movement pattern recognition**
+### 🐾 动物计数器 (YOLO)
+- **猫狗运动检测**
+- **基于体型的自适应校准**
+- **交互式键盘控制** 用于阈值调整
+- **跳跃和运动模式识别**
 
-### 🏀 Object Counters (YOLO)
-- **Sports ball bounce detection**
-- **Real-time object tracking**
-- **Ground reference calibration**
-- **Customizable sensitivity controls**
+### 🏀 物体计数器 (YOLO)
+- **运动球弹跳检测**
+- **实时物体跟踪**
+- **地面参考校准**
+- **可定制灵敏度控制**
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-### 1. Installation
+### 1. 安装
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run Unified Web Interface
+### 2. 运行统一网页界面
 ```bash
 python unified_web_app.py
 ```
-Access at: http://localhost:5000
+访问地址: http://localhost:5000
 
-### 3. Run Command Line Interface
+### 3. 运行命令行界面
 ```bash
-# List available counters
+# 列出可用计数器
 python unified_main.py --list
 
-# Run specific counter
+# 运行特定计数器
 python unified_main.py --counter SportsBallCounter --video 0
 
-# Run with custom parameters
+# 使用自定义参数运行
 python unified_main.py --counter DogCounter --video 0 --threshold 50 --confidence 0.4
 ```
 
-### 4. Admin Panel (Counter Management)
+### 4. 管理面板 (计数器管理)
 ```bash
 python admin_panel.py
 ```
-Access at: http://localhost:5000
+访问地址: http://localhost:5000
 
-## 📊 Available Counter Types
+## 📊 可用计数器类型
 
-### Human Action Counters
-| Counter | Exercise | Detection |
+### 人体动作计数器
+| 计数器 | 锻炼 | 检测 |
 |---------|----------|-----------|
-| PushUpCounter | Push-ups | MediaPipe |
-| SquatCounter | Squats | MediaPipe |
-| JumpingJackCounter | Jumping Jacks | MediaPipe |
-| BicepCurlCounter | Bicep Curls | MediaPipe |
-| ... | Various exercises | MediaPipe |
+| PushUpCounter | 俯卧撑 | MediaPipe |
+| SquatCounter | 深蹲 | MediaPipe |
+| JumpingJackCounter | 开合跳 | MediaPipe |
+| BicepCurlCounter | 二头肌弯举 | MediaPipe |
+| ... | 各种锻炼 | MediaPipe |
 
-### Animal Counters  
-| Counter | Animal | Logic | Features |
+### 动物计数器  
+| 计数器 | 动物 | 逻辑 | 功能 |
 |---------|--------|-------|----------|
-| DogCounter | Dog | Movement Detection | Keyboard controls, adaptive calibration |
-| CatCounter | Cat | Movement Detection | Keyboard controls, adaptive calibration |
+| DogCounter | 狗 | 运动检测 | 键盘控制，自适应校准 |
+| CatCounter | 猫 | 运动检测 | 键盘控制，自适应校准 |
 
-### Object Counters
-| Counter | Object | Logic | Features |
+### 物体计数器
+| 计数器 | 物体 | 逻辑 | 功能 |
 |---------|--------|-------|----------|
-| SportsBallCounter | Sports Ball | Bounce Detection | Ground calibration, keyboard controls |
+| SportsBallCounter | 运动球 | 弹跳检测 | 地面校准，键盘控制 |
 
-## 🎮 Keyboard Controls
+## 🎮 键盘控制
 
-### For Animal/Object Counters (YOLO):
-- **W/S**: Move reference line UP/DOWN
-- **+/-**: Adjust sensitivity (increase/decrease)
-- **0**: Reset to auto-calibration
-- **R**: Reset counter
-- **Q**: Quit
+### 对于动物/物体计数器 (YOLO):
+- **W/S**: 向上/向下移动参考线
+- **+/-**: 调整灵敏度（增加/减少）
+- **0**: 重置为自动校准
+- **R**: 重置计数器
+- **Q**: 退出
 
-### For All Counters:
-- **R**: Reset counter
-- **Q**: Quit
+### 对于所有计数器:
+- **R**: 重置计数器
+- **Q**: 退出
 
-## 🛠️ System Architecture
+## 🛠️ 系统架构
 
 ```
-📁 Unified Multi-Counter System
-├── 🌐 Web Interface (unified_web_app.py)
-├── 💻 Command Line (unified_main.py) 
-├── ⚙️ Admin Panel (admin_panel.py)
-├── 📊 Counter Modules
-│   ├── 🏃‍♀️ Human (MediaPipe-based)
-│   ├── 🐾 Animal (YOLO-based)
-│   └── 🏀 Object (YOLO-based)
-├── 🎨 Templates & UI
-└── 📝 Documentation
+📁 统一多计数器系统
+├── 🌐 网页界面 (unified_web_app.py)
+├── 💻 命令行 (unified_main.py) 
+├── ⚙️ 管理面板 (admin_panel.py)
+├── 📊 计数器模块
+│   ├── 🏃‍♀️ 人体 (基于 MediaPipe)
+│   ├── 🐾 动物 (基于 YOLO)
+│   └── 🏀 物体 (基于 YOLO)
+├── 🎨 模板和用户界面
+└── 📝 文档
 ```
 
-## 📱 Web Interface Features
+## 📱 网页界面功能
 
-### Unified Dashboard
-- **Categorized counter selection** (Human/Animal/Object)
-- **Real-time video streaming**
-- **Parameter configuration**
-- **Session management**
-- **Video file upload support**
+### 统一仪表盘
+- **分类计数器选择** (人体/动物/物体)
+- **实时视频流**
+- **参数配置**
+- **会话管理**
+- **视频文件上传支持**
 
-### Live Statistics
-- Current count display
-- Session duration
-- Detection confidence
-- Counter type information
+### 实时统计
+- 当前计数显示
+- 会话持续时间
+- 检测置信度
+- 计数器类型信息
 
-## ⚙️ Configuration Options
+## ⚙️ 配置选项
 
-### MediaPipe Counters
+### MediaPipe 计数器
 ```python
 {
-    "threshold": 40,           # Detection threshold
-    "stable_frames": 5,        # Frames for stability
-    "validation_threshold": 0.8, # Anti-cheat threshold
-    "enable_anti_cheat": true  # Enable validation
+    "threshold": 40,           # 检测阈值
+    "stable_frames": 5,        # 稳定帧数
+    "validation_threshold": 0.8, # 反作弊阈值
+    "enable_anti_cheat": true  # 启用验证
 }
 ```
 
-### YOLO Counters
+### YOLO 计数器
 ```python
 {
-    "threshold": 40,           # Detection threshold
-    "confidence_threshold": 0.25, # YOLO confidence
-    "stable_frames": 5,        # Stability frames
-    "calibration_frames": 50   # Auto-calibration frames
+    "threshold": 40,           # 检测阈值
+    "confidence_threshold": 0.25, # YOLO 置信度
+    "stable_frames": 5,        # 稳定帧数
+    "calibration_frames": 50   # 自动校准帧数
 }
 ```
 
-## 🔧 Advanced Usage
+## 🔧 高级用法
 
-### Adding New Counters
-1. **Use Admin Panel** to generate new counters
-2. **Or manually create** counter classes in `/counters/`
-3. **Follow existing patterns** for MediaPipe or YOLO counters
+### 添加新计数器
+1. **使用管理面板** 生成新计数器
+2. **或手动创建** 计数器类在 `/counters/`
+3. **遵循现有模式** 用于 MediaPipe 或 YOLO 计数器
 
-### Custom Video Sources
-- **Webcam**: Use `--video 0` or `--video 1`
-- **Video file**: Use `--video path/to/video.mp4`
-- **Web upload**: Use web interface upload feature
+### 自定义视频源
+- **摄像头**: 使用 `--video 0` 或 `--video 1`
+- **视频文件**: 使用 `--video path/to/video.mp4`
+- **网页上传**: 使用网页界面上传功能
 
-### Parameter Tuning
-- **Threshold**: Sensitivity of detection
-- **Confidence**: YOLO detection confidence
-- **Stable frames**: How many frames to confirm detection
-- **Calibration**: Auto-adjustment period for YOLO
+### 参数调整
+- **阈值**: 检测灵敏度
+- **置信度**: YOLO 检测置信度
+- **稳定帧数**: 确认检测的帧数
+- **校准**: YOLO 的自动调整周期
 
-## 🎯 Use Cases
+## 🎯 使用案例
 
-### Fitness & Health
-- **Personal training**: Count exercises automatically
-- **Physical therapy**: Monitor rehabilitation exercises
-- **Sports analysis**: Track athlete performance
+### 健身与健康
+- **个人训练**: 自动计数锻炼
+- **物理治疗**: 监控康复锻炼
+- **体育分析**: 跟踪运动员表现
 
-### Pet Monitoring
-- **Activity tracking**: Monitor pet movement and jumps
-- **Behavior analysis**: Study pet activity patterns
-- **Interactive play**: Engage pets with counting games
+### 宠物监控
+- **活动跟踪**: 监控宠物运动和跳跃
+- **行为分析**: 研究宠物活动模式
+- **互动游戏**: 通过计数游戏与宠物互动
 
-### Sports & Recreation
-- **Ball games**: Count bounces, throws, catches
-- **Training drills**: Automated repetition counting
-- **Performance metrics**: Quantify sports activities
+### 体育与娱乐
+- **球类运动**: 计数弹跳、投掷、接球
+- **训练演练**: 自动重复计数
+- **性能指标**: 量化体育活动
 
-## 🔍 Troubleshooting
+## 🔍 故障排除
 
-### Common Issues
-1. **Camera not detected**: Check video source index
-2. **Low detection accuracy**: Adjust threshold/confidence
-3. **Keyboard controls not working**: Ensure counter is calibrated
-4. **Web interface not loading**: Check port availability
+### 常见问题
+1. **未检测到摄像头**: 检查视频源索引
+2. **检测精度低**: 调整阈值/置信度
+3. **键盘控制无效**: 确保计数器已校准
+4. **网页界面未加载**: 检查端口可用性
 
-### Performance Optimization
-- **Reduce video resolution** for better performance
-- **Adjust detection confidence** for accuracy vs speed
-- **Use appropriate counter type** for your use case
+### 性能优化
+- **降低视频分辨率** 以提高性能
+- **调整检测置信度** 以平衡精度与速度
+- **使用适当的计数器类型** 适合您的用例
 
-## 📝 API Reference
+## 📝 API 参考
 
-### Counter Base Methods
+### 计数器基本方法
 ```python
-counter.update(frame)          # Update with new frame
-counter.reset()                # Reset counter to 0
-counter.get_debug_info()       # Get debug information
+counter.update(frame)          # 使用新帧更新
+counter.reset()                # 将计数器重置为0
+counter.get_debug_info()       # 获取调试信息
 ```
 
-### YOLO Counter Extensions
+### YOLO 计数器扩展
 ```python
-counter.adjust_center_line('up', 10)    # Move reference line
-counter.adjust_sensitivity('increase')  # Change sensitivity
-counter.reset_to_auto_calibration()     # Reset calibration
+counter.adjust_center_line('up', 10)    # 移动参考线
+counter.adjust_sensitivity('increase')  # 改变灵敏度
+counter.reset_to_auto_calibration()     # 重置校准
 ```
 
-## 🤝 Contributing
+## 🤝 贡献
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature-name`
-3. Add new counter types or improve existing ones
-4. Submit pull request with detailed description
+1. Fork 仓库
+2. 创建功能分支: `git checkout -b feature-name`
+3. 添加新计数器类型或改进现有计数器
+4. 提交详细描述的 pull request
 
-## 📄 License
+## 📄 许可证
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+此项目根据 MIT 许可证授权 - 详情请参阅 LICENSE 文件。
 
-## 🙏 Acknowledgments
+## 🙏 鸣谢
 
-- **MediaPipe** for human pose detection
-- **YOLO** for object detection
-- **OpenCV** for computer vision
-- **Flask** for web interface
+- **MediaPipe** 用于人体姿态检测
+- **YOLO** 用于物体检测
+- **OpenCV** 用于计算机视觉
+- **Flask** 用于网页界面
 
 ---
 
-## 🎯 Quick Commands
+## 🎯 快速命令
 
 ```bash
-# Web interface
+# 网页界面
 python unified_web_app.py
 
-# Command line - list counters
+# 命令行 - 列出计数器
 python unified_main.py --list
 
-# Command line - specific counter
+# 命令行 - 特定计数器
 python unified_main.py --counter SportsBallCounter
 
-# Admin panel
+# 管理面板
 python admin_panel.py
 
-# Legacy interfaces (still supported)
-python main.py --counter PushUpCounter        # MediaPipe only
-python yolo_main.py SportsBallCounter          # YOLO only
+# 旧版界面（仍受支持）
+python main.py --counter PushUpCounter        # 仅限 MediaPipe
+python yolo_main.py SportsBallCounter          # 仅限 YOLO
 ```
 
-**🌟 The Unified Multi-Counter System brings together the best of both worlds - human action detection and object/animal tracking in one powerful, easy-to-use platform!** 
+**🌟 统一多计数器系统结合了人体动作检测和物体/动物跟踪的最佳功能，提供了一个强大且易于使用的平台！** 
