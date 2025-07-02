@@ -1,6 +1,6 @@
 """
-YOLO Parameter Generator using LLM
-Generates optimal parameters for YOLO-based counters using Ollama.
+使用LLM的YOLO参数生成器
+使用Ollama为基于YOLO的计数器生成最优参数。
 """
 
 import json
@@ -10,15 +10,15 @@ from yolo_tracker import YOLO_CLASSES
 
 def generate_yolo_parameters(object_class, counter_type="general"):
     """
-    Generate YOLO counter parameters using LLM.
+    使用LLM生成YOLO计数器参数。
     
     Args:
-        object_class: YOLO object class (e.g., "dog", "sports ball")
-        counter_type: Type of counter ("animal", "object", "vehicle")
+        object_class: YOLO对象类别（例如："dog", "sports ball"）
+        counter_type: 计数器类型（"animal", "object", "vehicle"）
     """
     
-    # Determine category
-    category = "object"  # default
+    # 确定类别
+    category = "object"  # 默认
     for cat, classes in YOLO_CLASSES.items():
         if object_class in classes:
             if cat == "animals":
@@ -29,109 +29,109 @@ def generate_yolo_parameters(object_class, counter_type="general"):
                 category = "vehicle"
             break
     
-    # Create specialized prompt based on category
+    # 根据类别创建专门的提示
     prompt = create_yolo_prompt(object_class, category)
     
     try:
-        print(f"🤖 Generating parameters for {object_class} ({category}) using LLM...")
+        print(f"🤖 使用LLM为{object_class}（{category}）生成参数...")
         
-        # Call Ollama
+        # 调用Ollama
         result = subprocess.run([
             'ollama', 'run', 'llama3', prompt
         ], capture_output=True, text=True, timeout=30)
         
         if result.returncode != 0:
-            print(f"❌ LLM error: {result.stderr}")
+            print(f"❌ LLM错误: {result.stderr}")
             return get_default_parameters(object_class, category)
         
-        # Parse LLM response
+        # 解析LLM响应
         response = result.stdout.strip()
         parameters = parse_llm_response(response, object_class, category)
         
-        print(f"✅ Generated parameters for {object_class}")
+        print(f"✅ 为{object_class}生成了参数")
         return parameters
         
     except subprocess.TimeoutExpired:
-        print("⏰ LLM timeout, using default parameters")
+        print("⏰ LLM超时，使用默认参数")
         return get_default_parameters(object_class, category)
     except Exception as e:
-        print(f"❌ Error generating parameters: {e}")
+        print(f"❌ 生成参数时出错: {e}")
         return get_default_parameters(object_class, category)
 
 def create_yolo_prompt(object_class, category):
-    """Create specialized prompt for different object categories."""
+    """为不同对象类别创建专门的提示。"""
     
     base_prompt = f"""
-You are an expert in computer vision and object tracking. Generate optimal parameters for a YOLO-based counter that tracks "{object_class}".
+你是计算机视觉和对象跟踪方面的专家。为跟踪"{object_class}"的基于YOLO的计数器生成最优参数。
 
-Object Category: {category}
-Available Logic Types:
-- bounce_detection: For objects that bounce (balls, bouncing animals)
-- jump_detection: For objects that jump (animals, people)
-- movement_detection: For general movement tracking
-- oscillation: For back-and-forth movement
+对象类别: {category}
+可用逻辑类型:
+- bounce_detection: 用于弹跳物体（球类、弹跳动物）
+- jump_detection: 用于跳跃物体（动物、人）
+- movement_detection: 用于一般运动跟踪
+- oscillation: 用于来回运动
 
-Parameters to determine:
-1. logic_type: Choose the most appropriate detection logic
-2. threshold: Movement threshold in pixels (20-100)
-3. confidence_threshold: YOLO detection confidence (0.3-0.9)
-4. stable_frames: Frames to confirm detection (1-10)
-5. direction: Movement direction preference if applicable
+需要确定的参数:
+1. logic_type: 选择最合适的检测逻辑
+2. threshold: 像素运动阈值（20-100）
+3. confidence_threshold: YOLO检测置信度（0.3-0.9）
+4. stable_frames: 确认检测的帧数（1-10）
+5. direction: 运动方向偏好（如果适用）
 
 """
 
     if category == "animal":
         specific_prompt = f"""
-For ANIMAL tracking ({object_class}):
-- Consider natural movement patterns
-- Animals may have partial movements (not full jumps)
-- Different animals have different movement speeds
-- Account for body size and typical behavior
+对于动物跟踪（{object_class}）:
+- 考虑自然运动模式
+- 动物可能有部分运动（非完整跳跃）
+- 不同动物有不同的运动速度
+- 考虑体型大小和典型行为
 
-Example behaviors:
-- Dogs: jumping, running, playing
-- Cats: stalking, pouncing, climbing
-- Birds: hopping, flying, perching
-- Horses: galloping, jumping, trotting
+示例行为:
+- 狗: 跳跃、跑步、玩耍
+- 猫: 潜行、扑跃、攀爬
+- 鸟: 跳跃、飞行、栖息
+- 马: 奔跑、跳跃、小跑
 
-Generate parameters that accurately detect complete movement cycles while avoiding false positives from partial movements.
+生成能准确检测完整运动周期同时避免部分运动误报的参数。
 """
     
     elif category == "object":
         specific_prompt = f"""
-For OBJECT tracking ({object_class}):
-- Consider physics of object movement
-- Objects follow predictable motion patterns
-- Sports balls bounce consistently
-- Consider object size and weight effects
+对于物体跟踪（{object_class}）:
+- 考虑物体运动的物理规律
+- 物体遵循可预测的运动模式
+- 体育球弹跳一致
+- 考虑物体大小和重量影响
 
-Example behaviors:
-- Sports balls: bouncing, rolling, being thrown
-- Bottles/cups: being picked up, moved, placed
-- Tools: being used, moved, manipulated
+示例行为:
+- 体育球: 弹跳、滚动、被投掷
+- 瓶子/杯子: 被拿起、移动、放置
+- 工具: 被使用、移动、操作
 
-Generate parameters optimized for the specific physics and typical usage of this object.
+为此物体的特定物理规律和典型使用生成优化的参数。
 """
     
     else:  # vehicle
         specific_prompt = f"""
-For VEHICLE tracking ({object_class}):
-- Vehicles move in predictable patterns
-- Consider typical speeds and movement types
-- Account for size differences
-- Focus on entry/exit detection
+对于车辆跟踪（{object_class}）:
+- 车辆以可预测的模式移动
+- 考虑典型速度和运动类型
+- 考虑大小差异
+- 专注于进入/退出检测
 
-Generate parameters for counting vehicle movements or passages.
+为车辆运动或通过计数生成参数。
 """
 
     format_prompt = """
-Respond ONLY with a valid JSON object in this exact format:
+仅用以下精确格式响应有效的JSON对象:
 {
     "logic_type": "bounce_detection|jump_detection|movement_detection|oscillation",
     "threshold": 30,
     "confidence_threshold": 0.7,
     "stable_frames": 3,
-    "reasoning": "Brief explanation of parameter choices"
+    "reasoning": "参数选择的简要说明"
 }
 
 JSON:"""
@@ -139,32 +139,32 @@ JSON:"""
     return base_prompt + specific_prompt + format_prompt
 
 def parse_llm_response(response, object_class, category):
-    """Parse LLM response and extract parameters."""
+    """解析LLM响应并提取参数。"""
     try:
-        # Find JSON in response
+        # 在响应中找到JSON
         json_start = response.find('{')
         json_end = response.rfind('}') + 1
         
         if json_start == -1 or json_end == 0:
-            raise ValueError("No JSON found in response")
+            raise ValueError("响应中未找到JSON")
         
         json_str = response[json_start:json_end]
         params = json.loads(json_str)
         
-        # Validate parameters
+        # 验证参数
         params = validate_parameters(params, object_class, category)
         
         return params
         
     except Exception as e:
-        print(f"⚠️  Error parsing LLM response: {e}")
-        print(f"Raw response: {response}")
+        print(f"⚠️  解析LLM响应时出错: {e}")
+        print(f"原始响应: {response}")
         return get_default_parameters(object_class, category)
 
 def validate_parameters(params, object_class, category):
-    """Validate and correct parameters if needed."""
+    """验证并在需要时纠正参数。"""
     
-    # Validate logic_type
+    # 验证logic_type
     valid_logic_types = ["bounce_detection", "jump_detection", "movement_detection", "oscillation"]
     if params.get("logic_type") not in valid_logic_types:
         if category == "animal":
@@ -174,22 +174,22 @@ def validate_parameters(params, object_class, category):
         else:
             params["logic_type"] = "movement_detection"
     
-    # Validate threshold
+    # 验证threshold
     threshold = params.get("threshold", 30)
     params["threshold"] = max(20, min(100, int(threshold)))
     
-    # Validate confidence_threshold
+    # 验证confidence_threshold
     confidence = params.get("confidence_threshold", 0.7)
     params["confidence_threshold"] = max(0.3, min(0.9, float(confidence)))
     
-    # Validate stable_frames
+    # 验证stable_frames
     frames = params.get("stable_frames", 3)
     params["stable_frames"] = max(1, min(10, int(frames)))
     
     return params
 
 def get_default_parameters(object_class, category):
-    """Get default parameters based on object category."""
+    """根据对象类别获取默认参数。"""
     
     if category == "animal":
         return {
@@ -197,7 +197,7 @@ def get_default_parameters(object_class, category):
             "threshold": 40,
             "confidence_threshold": 0.6,
             "stable_frames": 4,
-            "reasoning": "Default animal parameters - moderate sensitivity for jump detection"
+            "reasoning": "默认动物参数 - 跳跃检测的中等敏感度"
         }
     elif "ball" in object_class:
         return {
@@ -205,7 +205,7 @@ def get_default_parameters(object_class, category):
             "threshold": 35,
             "confidence_threshold": 0.7,
             "stable_frames": 3,
-            "reasoning": "Default ball parameters - optimized for bounce detection"
+            "reasoning": "默认球类参数 - 为弹跳检测优化"
         }
     else:
         return {
@@ -213,11 +213,11 @@ def get_default_parameters(object_class, category):
             "threshold": 30,
             "confidence_threshold": 0.5,
             "stable_frames": 3,
-            "reasoning": "Default object parameters - general movement detection"
+            "reasoning": "默认物体参数 - 一般运动检测"
         }
 
 def test_parameter_generation():
-    """Test parameter generation for different object types."""
+    """测试不同对象类型的参数生成。"""
     
     test_objects = [
         ("dog", "animal"),
@@ -227,16 +227,16 @@ def test_parameter_generation():
         ("bird", "animal")
     ]
     
-    print("🧪 Testing YOLO Parameter Generation\n")
+    print("🧪 测试YOLO参数生成\n")
     
     for obj, expected_category in test_objects:
-        print(f"Testing: {obj}")
+        print(f"测试: {obj}")
         params = generate_yolo_parameters(obj)
-        print(f"  Logic: {params['logic_type']}")
-        print(f"  Threshold: {params['threshold']}px")
-        print(f"  Confidence: {params['confidence_threshold']}")
-        print(f"  Stable Frames: {params['stable_frames']}")
-        print(f"  Reasoning: {params['reasoning']}")
+        print(f"  逻辑: {params['logic_type']}")
+        print(f"  阈值: {params['threshold']}px")
+        print(f"  置信度: {params['confidence_threshold']}")
+        print(f"  稳定帧数: {params['stable_frames']}")
+        print(f"  原因: {params['reasoning']}")
         print()
 
 if __name__ == "__main__":

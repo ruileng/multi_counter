@@ -1,6 +1,6 @@
 """
-YOLO-based object tracker for animals and objects.
-Handles detection, tracking, and movement pattern analysis.
+基于YOLO的动物和物体对象跟踪器。
+处理检测、跟踪和运动模式分析。
 """
 
 import cv2
@@ -17,16 +17,16 @@ except ImportError:
 
 class YOLOTracker:
     """
-    YOLO-based object tracker for counting repetitive movements.
+    基于YOLO的对象跟踪器，用于计数重复性运动。
     """
     
     def __init__(self, object_class: str = "dog", confidence_threshold: float = 0.5):
         """
-        Initialize YOLO tracker.
+        初始化YOLO跟踪器。
         
         Args:
-            object_class: YOLO class name to track (e.g., "dog", "sports ball")
-            confidence_threshold: Minimum confidence for detection
+            object_class: 要跟踪的YOLO类别名称（例如："dog", "sports ball"）
+            confidence_threshold: 检测的最小置信度
         """
         self.object_class = object_class.lower()
         self.confidence_threshold = confidence_threshold
@@ -36,30 +36,30 @@ class YOLOTracker:
         self.movement_history = []
         self.last_detection_time = 0
         
-        # Initialize YOLO model
+        # 初始化YOLO模型
         if YOLO_AVAILABLE:
             try:
-                print(f"🔄 Loading YOLO model for '{object_class}' detection...")
-                self.model = YOLO('yolov8n.pt')  # Nano model (fastest)
-                print("✅ YOLO model loaded successfully!")
+                print(f"🔄 正在为'{object_class}'检测加载YOLO模型...")
+                self.model = YOLO('yolov8n.pt')  # Nano模型（最快）
+                print("✅ YOLO模型加载成功!")
             except Exception as e:
-                print(f"❌ Error loading YOLO model: {e}")
+                print(f"❌ 加载YOLO模型时出错: {e}")
                 self.model = None
         else:
-            print("❌ YOLO not available. Please install dependencies.")
+            print("❌ YOLO不可用。请安装依赖项。")
     
     def detect_objects(self, frame: np.ndarray) -> List[Dict]:
         """
-        Detect objects in frame using YOLO.
+        使用YOLO在帧中检测对象。
         
         Returns:
-            List of detected objects with bounding boxes and confidence
+            检测到的对象列表，包含边界框和置信度
         """
         if not self.model:
             return []
         
         try:
-            # Run YOLO detection
+            # 运行YOLO检测
             results = self.model(frame, verbose=False)
             detections = []
             
@@ -67,14 +67,14 @@ class YOLOTracker:
                 boxes = result.boxes
                 if boxes is not None:
                     for box in boxes:
-                        # Get class name
+                        # 获取类别名称
                         class_id = int(box.cls[0])
                         class_name = self.model.names[class_id].lower()
                         confidence = float(box.conf[0])
                         
-                        # Filter by object class and confidence
+                        # 按对象类别和置信度过滤
                         if (self.object_class in class_name or class_name in self.object_class) and confidence >= self.confidence_threshold:
-                            # Get bounding box coordinates
+                            # 获取边界框坐标
                             x1, y1, x2, y2 = box.xyxy[0].tolist()
                             
                             detection = {
@@ -90,12 +90,12 @@ class YOLOTracker:
             return detections
             
         except Exception as e:
-            print(f"Error in YOLO detection: {e}")
+            print(f"YOLO检测中出错: {e}")
             return []
     
     def get_best_detection(self, detections: List[Dict]) -> Optional[Dict]:
         """
-        Get the best detection (highest confidence or closest to previous).
+        获取最佳检测（最高置信度或最接近前一个）。
         """
         if not detections:
             return None
@@ -103,7 +103,7 @@ class YOLOTracker:
         if len(detections) == 1:
             return detections[0]
         
-        # If we have previous detection, prefer closest one
+        # 如果有前一次检测，优选最接近的
         if self.previous_center:
             best_detection = None
             min_distance = float('inf')
@@ -118,70 +118,70 @@ class YOLOTracker:
             
             return best_detection
         
-        # Otherwise, return highest confidence
+        # 否则，返回最高置信度的
         return max(detections, key=lambda x: x['confidence'])
     
     def calculate_movement(self, current_center: Tuple[int, int]) -> Dict:
         """
-        Calculate movement metrics between current and previous position.
+        计算当前位置和前一位置之间的运动指标。
         """
         if not self.previous_center:
             self.previous_center = current_center
             return {'distance': 0, 'vertical_change': 0, 'horizontal_change': 0}
         
-        # Calculate movement
+        # 计算运动
         dx = current_center[0] - self.previous_center[0]
         dy = current_center[1] - self.previous_center[1]
         distance = np.sqrt(dx**2 + dy**2)
         
         movement = {
             'distance': distance,
-            'vertical_change': dy,  # Positive = down, Negative = up
-            'horizontal_change': dx,  # Positive = right, Negative = left
+            'vertical_change': dy,  # 正值 = 向下，负值 = 向上
+            'horizontal_change': dx,  # 正值 = 向右，负值 = 向左
             'previous_center': self.previous_center,
             'current_center': current_center
         }
         
-        # Update history
+        # 更新历史记录
         self.movement_history.append({
             'timestamp': time.time(),
             'center': current_center,
             'movement': movement
         })
         
-        # Keep only recent history (last 30 frames)
+        # 仅保留最近的历史记录（最后30帧）
         if len(self.movement_history) > 30:
             self.movement_history.pop(0)
         
-        # Update previous center
+        # 更新前一个中心点
         self.previous_center = current_center
         
         return movement
     
     def detect_bounce(self, movement: Dict, threshold: float = 30) -> bool:
         """
-        Detect if object is bouncing (up-down movement).
-        Improved algorithm for better bounce detection.
+        检测对象是否在弹跳（上下运动）。
+        改进的算法以获得更好的弹跳检测。
         """
-        if len(self.movement_history) < 5:  # Need more history for reliable detection
+        if len(self.movement_history) < 5:  # 需要更多历史记录以进行可靠检测
             return False
         
-        # Get recent vertical movements
+        # 获取最近的垂直运动
         recent_movements = self.movement_history[-5:]
         vertical_changes = [m['movement']['vertical_change'] for m in recent_movements]
         
-        # Look for bounce pattern: down movement followed by up movement
-        # A bounce should show: falling (positive y) then rising (negative y)
+        # 寻找弹跳模式：向下运动后跟向上运动
+        # 弹跳应该显示：下降（正y）然后上升（负y）
         for i in range(len(vertical_changes) - 1):
             current_change = vertical_changes[i]
             next_change = vertical_changes[i + 1]
             
-            # Detect bounce: significant downward movement followed by upward movement
+            # 检测弹跳：显著的向下运动后跟向上运动
             if (current_change > threshold and next_change < -threshold * 0.5):
-                # Additional validation: check if the object was actually moving down then up
+                # 额外验证：检查对象是否确实先向下后向上移动
                 if i >= 1:
                     prev_change = vertical_changes[i - 1]
-                    # Confirm downward trend before bounce
+                    # 确认弹跳前的向下趋势
                     if prev_change > 0:
                         return True
         
@@ -189,28 +189,28 @@ class YOLOTracker:
     
     def detect_jump(self, movement: Dict, threshold: float = 50) -> bool:
         """
-        Detect jumping motion (significant upward movement with return).
-        Improved algorithm for better jump detection.
+        检测跳跃动作（显著的向上运动并返回）。
+        改进的算法以获得更好的跳跃检测。
         """
         if len(self.movement_history) < 4:
             return False
         
-        # Get recent movements
+        # 获取最近的运动
         recent_movements = self.movement_history[-4:]
         vertical_changes = [m['movement']['vertical_change'] for m in recent_movements]
         
-        # Look for jump pattern: rapid upward movement followed by downward return
-        # A jump should show: up (negative y) then down (positive y)
+        # 寻找跳跃模式：快速向上运动后向下返回
+        # 跳跃应该显示：向上（负y）然后向下（正y）
         for i in range(len(vertical_changes) - 1):
             current_change = vertical_changes[i]
             next_change = vertical_changes[i + 1]
             
-            # Detect jump: significant upward movement followed by downward movement
+            # 检测跳跃：显著的向上运动后跟向下运动
             if (current_change < -threshold and next_change > threshold * 0.3):
-                # Additional validation: check for sustained upward movement
+                # 额外验证：检查持续的向上运动
                 if i >= 1:
                     prev_change = vertical_changes[i - 1]
-                    # Confirm upward trend during jump
+                    # 确认跳跃期间的向上趋势
                     if prev_change < 0:
                         return True
         
@@ -218,7 +218,7 @@ class YOLOTracker:
     
     def detect_movement_pattern(self, movement: Dict, pattern_type: str, threshold: float = 30) -> bool:
         """
-        Advanced pattern detection for different movement types.
+        用于不同运动类型的高级模式检测。
         """
         if pattern_type == "bounce":
             return self.detect_bounce(movement, threshold)
@@ -231,17 +231,17 @@ class YOLOTracker:
     
     def detect_oscillation(self, movement: Dict, threshold: float = 30) -> bool:
         """
-        Detect oscillating movement (back and forth).
+        检测振荡运动（来回移动）。
         """
         if len(self.movement_history) < 6:
             return False
         
-        # Check for oscillating pattern in horizontal or vertical movement
+        # 检查水平或垂直运动的振荡模式
         recent_movements = self.movement_history[-6:]
         horizontal_changes = [m['movement']['horizontal_change'] for m in recent_movements]
         vertical_changes = [m['movement']['vertical_change'] for m in recent_movements]
         
-        # Count direction changes
+        # 计数方向变化
         h_direction_changes = 0
         v_direction_changes = 0
         
@@ -251,12 +251,12 @@ class YOLOTracker:
             if (vertical_changes[i] > 0) != (vertical_changes[i-1] > 0):
                 v_direction_changes += 1
         
-        # Oscillation detected if multiple direction changes
+        # 如果多次方向变化则检测到振荡
         return (h_direction_changes >= 3 or v_direction_changes >= 3)
     
     def draw_detection(self, frame: np.ndarray, detection: Dict) -> np.ndarray:
         """
-        Draw bounding box and info on frame.
+        在帧上绘制边界框和信息。
         """
         if not detection:
             return frame
@@ -266,20 +266,20 @@ class YOLOTracker:
         confidence = detection['confidence']
         class_name = detection['class']
         
-        # Draw bounding box
+        # 绘制边界框
         cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 255, 0), 2)
         
-        # Draw center point
+        # 绘制中心点
         cv2.circle(frame, center, 5, (0, 0, 255), -1)
         
-        # Draw label
+        # 绘制标签
         label = f"{class_name}: {confidence:.2f}"
         cv2.putText(frame, label, (bbox[0], bbox[1] - 10), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         
-        # Draw movement trail
+        # 绘制运动轨迹
         if len(self.movement_history) > 1:
-            points = [m['center'] for m in self.movement_history[-10:]]  # Last 10 positions
+            points = [m['center'] for m in self.movement_history[-10:]]  # 最后10个位置
             for i in range(1, len(points)):
                 cv2.line(frame, points[i-1], points[i], (255, 0, 0), 2)
         
@@ -294,17 +294,17 @@ YOLO_CLASSES = {
 }
 
 def list_available_classes():
-    """Print all available YOLO classes."""
-    print("🎯 Available YOLO Classes:")
+    """打印所有可用的YOLO类别。"""
+    print("🎯 可用的YOLO类别:")
     for category, classes in YOLO_CLASSES.items():
         print(f"\n📂 {category.title()}:")
         for cls in classes:
             print(f"   • {cls}")
 
 if __name__ == "__main__":
-    # Test the tracker
+    # 测试跟踪器
     list_available_classes()
     
-    # Example usage
+    # 使用示例
     tracker = YOLOTracker("dog")
-    print(f"\n🐕 Dog tracker initialized: {tracker.model is not None}") 
+    print(f"\n🐕 狗跟踪器已初始化: {tracker.model is not None}") 

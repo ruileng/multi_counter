@@ -1,6 +1,6 @@
 """
-YOLO Counter Generator
-Creates counters for animals and objects using YOLO detection with LLM-generated parameters.
+YOLO计数器生成器
+使用YOLO检测和LLM集成为动物和物体创建计数器。
 """
 
 import os
@@ -11,33 +11,33 @@ from yolo_param_generator import generate_yolo_parameters
 
 def generate_yolo_counter(object_class, use_llm=True, **manual_params):
     """
-    Generate a YOLO-based counter for the specified object.
+    为指定对象生成基于YOLO的计数器。
     
     Args:
-        object_class: YOLO object class (e.g., "dog", "sports ball")
-        use_llm: Whether to use LLM for parameter generation
-        **manual_params: Manual parameter overrides
+        object_class: YOLO对象类别（例如："dog", "sports ball"）
+        use_llm: 是否使用LLM进行参数生成
+        **manual_params: 手动参数覆盖
     """
     
-    # Determine category and folder
+    # 确定类别和文件夹
     category, folder = determine_category_and_folder(object_class)
     
-    # Generate parameters
+    # 生成参数
     if use_llm and not manual_params:
-        print(f"🤖 Using LLM to generate parameters for {object_class}...")
+        print(f"🤖 使用LLM为 {object_class} 生成参数...")
         params = generate_yolo_parameters(object_class)
     else:
-        print(f"📝 Using manual parameters for {object_class}...")
+        print(f"📝 为 {object_class} 使用手动参数...")
         params = manual_params or get_default_params_by_category(category)
     
-    # Generate class name
+    # 生成类名
     class_name = ''.join(word.capitalize() for word in object_class.split()) + "Counter"
     
-    # Load template
+    # 加载模板
     env = Environment(loader=FileSystemLoader('./templates'))
     template = env.get_template('yolo_counter_template_v2.py.j2')
     
-    # Generate code
+    # 生成代码
     code = template.render(
         class_name=class_name,
         object_class=object_class,
@@ -47,20 +47,20 @@ def generate_yolo_counter(object_class, use_llm=True, **manual_params):
         stable_frames=params.get('stable_frames', 3)
     )
     
-    # Create folder if it doesn't exist
+    # 如果文件夹不存在则创建
     folder_path = os.path.join('./counters', folder)
     os.makedirs(folder_path, exist_ok=True)
     
-    # Save to appropriate folder
+    # 保存到适当的文件夹
     filename = f"{object_class.replace(' ', '_').lower()}_counter.py"
     filepath = os.path.join(folder_path, filename)
     
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(code)
     
-    print(f"✅ Generated YOLO counter: {filepath}")
+    print(f"✅ 生成YOLO计数器: {filepath}")
     
-    # Return config for JSON storage
+    # 返回用于JSON存储的配置
     config = {
         "name": class_name,
         "detection_type": "yolo",
@@ -71,13 +71,13 @@ def generate_yolo_counter(object_class, use_llm=True, **manual_params):
         "threshold": params.get('threshold', 30),
         "confidence_threshold": params.get('confidence_threshold', 0.5),
         "stable_frames": params.get('stable_frames', 3),
-        "reasoning": params.get('reasoning', 'Generated parameters')
+        "reasoning": params.get('reasoning', '生成的参数')
     }
     
     return config
 
 def determine_category_and_folder(object_class):
-    """Determine category and appropriate folder for the object."""
+    """确定对象的类别和适当的文件夹。"""
     
     for category, classes in YOLO_CLASSES.items():
         if object_class in classes:
@@ -86,12 +86,12 @@ def determine_category_and_folder(object_class):
             elif category in ["sports", "objects"]:
                 return "object", "object"
             elif category == "vehicles":
-                return "vehicle", "object"  # Put vehicles in object folder
+                return "vehicle", "object"  # 将车辆放在object文件夹
     
-    return "object", "object"  # Default
+    return "object", "object"  # 默认
 
 def get_default_params_by_category(category):
-    """Get default parameters based on category."""
+    """根据类别获取默认参数。"""
     
     if category == "animal":
         return {
@@ -116,7 +116,7 @@ def get_default_params_by_category(category):
         }
 
 def create_sample_counters():
-    """Create sample YOLO counters for testing with LLM parameters."""
+    """创建示例YOLO计数器用于使用LLM参数进行测试。"""
     
     sample_objects = [
         "dog",
@@ -132,15 +132,15 @@ def create_sample_counters():
             generated_config = generate_yolo_counter(object_class, use_llm=True)
             configs.append(generated_config)
         except Exception as e:
-            print(f"❌ Error generating {object_class} counter: {e}")
-            # Fallback to manual parameters
+            print(f"❌ 生成 {object_class} 计数器时出错: {e}")
+            # 回退到手动参数
             generated_config = generate_yolo_counter(object_class, use_llm=False)
             configs.append(generated_config)
     
     return configs
 
 def regenerate_existing_counters():
-    """Regenerate existing counters with LLM parameters and proper organization."""
+    """使用LLM参数和适当的组织重新生成现有计数器。"""
     
     existing_objects = [
         "dog",
@@ -148,7 +148,7 @@ def regenerate_existing_counters():
         "sports ball"
     ]
     
-    print("🔄 Regenerating existing counters with LLM parameters...")
+    print("🔄 使用LLM参数重新生成现有计数器...")
     
     configs = []
     for object_class in existing_objects:
@@ -156,52 +156,52 @@ def regenerate_existing_counters():
             config = generate_yolo_counter(object_class, use_llm=True)
             configs.append(config)
         except Exception as e:
-            print(f"❌ Error regenerating {object_class} counter: {e}")
+            print(f"❌ 重新生成 {object_class} 计数器时出错: {e}")
     
     return configs
 
 def list_yolo_options():
-    """Print available YOLO options for counter generation."""
-    print("🎯 YOLO Counter Generator Options\n")
+    """打印YOLO计数器生成的可用选项。"""
+    print("🎯 YOLO计数器生成器选项\n")
     
-    print("📂 Available Object Classes:")
+    print("📂 可用对象类别:")
     for category, classes in YOLO_CLASSES.items():
         folder = "animal" if category == "animals" else "object"
         print(f"\n  {category.title()} → counters/{folder}/:")
         for cls in classes:
             print(f"    • {cls}")
     
-    print("\n🔧 Logic Types (Auto-selected by LLM):")
-    print("  • bounce_detection - For bouncing objects (balls, bouncing animals)")
-    print("  • jump_detection - For jumping motions (animals, people)")
-    print("  • movement_detection - For general movement tracking")
-    print("  • oscillation - For back-and-forth movement")
+    print("\n🔧 逻辑类型（LLM自动选择）:")
+    print("  • bounce_detection - 用于弹跳物体（球类、弹跳动物）")
+    print("  • jump_detection - 用于跳跃动作（动物、人）")
+    print("  • movement_detection - 用于一般运动跟踪")
+    print("  • oscillation - 用于来回运动")
     
-    print("\n⚙️  Parameters (Optimized by LLM):")
-    print("  • threshold: Movement distance in pixels (20-100)")
-    print("  • confidence_threshold: YOLO detection confidence (0.3-0.9)")
-    print("  • stable_frames: Frames to confirm detection (1-10)")
+    print("\n⚙️  参数（LLM优化）:")
+    print("  • threshold: 像素运动距离（20-100）")
+    print("  • confidence_threshold: YOLO检测置信度（0.3-0.9）")
+    print("  • stable_frames: 确认检测的帧数（1-10）")
     
-    print("\n🤖 LLM Integration:")
-    print("  • Automatic parameter optimization based on object type")
-    print("  • Category-specific behavior analysis")
-    print("  • Physics-based parameter selection")
+    print("\n🤖 LLM集成:")
+    print("  • 基于对象类型的自动参数优化")
+    print("  • 特定类别的行为分析")
+    print("  • 基于物理的参数选择")
 
 if __name__ == "__main__":
-    print("🚀 YOLO Counter Generator with LLM Integration\n")
+    print("🚀 带LLM集成的YOLO计数器生成器\n")
     
-    # Show available options
+    # 显示可用选项
     list_yolo_options()
     
     print("\n" + "="*60)
-    print("🧪 Regenerating Existing Counters with LLM Parameters...")
+    print("🧪 使用LLM参数重新生成现有计数器...")
     
-    # Regenerate existing counters
+    # 重新生成现有计数器
     configs = regenerate_existing_counters()
     
-    print(f"\n✅ Regenerated {len(configs)} YOLO counters:")
+    print(f"\n✅ 重新生成了 {len(configs)} 个YOLO计数器:")
     for config in configs:
         print(f"  • {config['name']} ({config['object_class']}) → counters/{config['folder']}/")
-        print(f"    Logic: {config['logic_type']}, Threshold: {config['threshold']}px")
+        print(f"    逻辑: {config['logic_type']}, 阈值: {config['threshold']}px")
     
-    print("\n🎉 YOLO counters ready with LLM-optimized parameters!") 
+    print("\n🎉 YOLO计数器已准备好，使用LLM优化的参数!") 
